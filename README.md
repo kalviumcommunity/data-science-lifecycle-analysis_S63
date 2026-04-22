@@ -641,3 +641,170 @@ You can now:
 - Use restart to reset memory and ensure reproducibility
 
 You can control Jupyter kernels confidently now.
+
+
+Milestone 4.10: Writing Markdown for Headings, Lists, and Code Blocks in Jupyter Notebooks
+
+Use this as a guided beginner practice. Follow one step at a time.
+
+Step 1: Setup
+
+What to do:
+- Open Jupyter Notebook.
+- Create a new notebook from New -> Python 3 (ipykernel).
+
+Why it matters:
+- You need a notebook open before practicing Markdown formatting.
+
+Checkpoint:
+- Confirm your notebook tab is open.
+
+Step 2: Markdown Introduction
+
+What to do:
+- Insert a new cell.
+- Change cell type to Markdown from the toolbar.
+- Write a simple title:
+# Markdown Practice Notebook
+- Press Shift + Enter to render.
+
+Why it matters:
+- Markdown is for explanation and structure.
+- Code cells are for execution.
+
+Core idea:
+- Markdown explains your work.
+- Code performs your work.
+
+Step 3: Headings Practice
+
+What to do:
+In a Markdown cell, write:
+# Main Heading
+## Subheading 1
+## Subheading 2
+### Smaller Subheading
+
+Then press Shift + Enter.
+
+Why it matters:
+- Headings organize notebook sections.
+- Better structure makes your notebook easier to read and review.
+
+Step 4: Lists Practice
+
+What to do:
+Create one Markdown cell with unordered list:
+- Clean data
+- Analyze data
+- Present findings
+
+Create another Markdown cell with ordered list:
+1. Write the question
+2. Run the code
+3. Explain the result
+
+Why it matters:
+- Lists make important points easy to scan quickly.
+- Ordered lists are useful for step-by-step workflows.
+
+Step 5: Inline Code
+
+What to do:
+Write this sentence in a Markdown cell:
+Use `x` to store a value and call `print()` to display it.
+
+Then render the cell.
+
+Why it matters:
+- Inline code highlights technical words, variable names, and functions inside explanations.
+- It improves clarity without switching to a full code block.
+
+Step 6: Code Blocks in Markdown
+
+What to do:
+Write this in a Markdown cell:
+```python
+x = 5
+print(x)
+```
+Then press Shift + Enter.
+
+Why it matters:
+- Code blocks show code examples for explanation.
+- Markdown code blocks do not execute; they are for documentation only.
+
+Step 7: Combine Markdown + Code Cells
+
+What to do:
+Create this 4-cell notebook flow:
+
+1) Markdown title
+# Simple Notebook Structure
+
+2) Markdown explanation
+This notebook demonstrates how Markdown and Code cells work together.
+
+3) Code cell
+num = 10
+print("Number is", num)
+
+4) Markdown explanation of output
+The code created a variable and printed its value.
+
+Why it matters:
+- Clean notebooks combine explanation and execution in logical order.
+- Rule to remember:
+  - Markdown = why
+  - Code = what
+
+Step 8: Reflection
+
+What to do:
+Answer these in a Markdown cell:
+- Why should we not write everything only in code comments?
+- Why is Markdown important in notebooks?
+
+Why it matters:
+- Reflection builds understanding, not memorization.
+- Good notebook communication helps teammates and future-you.
+
+Suggested short points:
+- Code comments are limited and stay inside code blocks.
+- Markdown gives full context, section structure, and readable explanations.
+
+Step 9: 2-Minute Video Preparation
+
+Use this speaking flow:
+
+1) Intro (15-20 sec)
+- "This demo shows Markdown basics in Jupyter notebooks."
+
+2) Markdown cell creation (20-25 sec)
+- Create a Markdown cell and render it.
+
+3) Headings and lists (25-30 sec)
+- Show one heading and both list types.
+- Explain readability benefit.
+
+4) Inline code and code block (25-30 sec)
+- Show `print()` as inline code.
+- Show fenced code block and explain it is not executed in Markdown.
+
+5) Switch Markdown <-> Code and explain purpose (20-25 sec)
+- Markdown for explanation.
+- Code for execution.
+
+6) Close with importance (15-20 sec)
+- "Documentation matters because it makes analysis understandable and reproducible."
+
+Milestone 4.10 Outcome
+
+You can now:
+- Write headings in Markdown
+- Create ordered and unordered lists
+- Use inline code and Markdown code blocks
+- Structure a notebook with Markdown and Code cells
+- Explain clearly when to use Markdown vs Code
+
+You are ready for the next milestone.
