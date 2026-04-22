@@ -334,3 +334,151 @@ You can now:
 - Navigate folders correctly
 - Create and run notebook cells
 - Rename, save, close, and reopen notebooks safely
+
+
+Milestone 4.8: Understanding Notebook Cells (Code vs Markdown)
+
+Use this as a beginner-friendly practice flow. Follow one step at a time.
+
+Step 1: Open Jupyter and Create a New Notebook
+
+What to do:
+- Launch Jupyter Notebook from terminal.
+- On Home page, click New -> Python 3 (ipykernel).
+
+Why it matters:
+- A notebook is your workspace.
+- You need a live notebook before learning cell types.
+
+Checkpoint:
+- Confirm you see a new notebook tab (usually named Untitled).
+
+Step 2: Create and Run a Code Cell
+
+What to do:
+- Click the first cell (default type is Code).
+- Type:
+print("This is a code cell")
+- Press Shift + Enter.
+
+Why it matters:
+- Code cells execute Python logic.
+- Only code cells run code and produce program output.
+
+Checkpoint:
+- You should see:
+This is a code cell
+
+Step 3: Create a Markdown Cell
+
+What to do:
+- Insert a new cell below.
+- Change cell type from Code to Markdown (from toolbar dropdown).
+- Type:
+# My First Notebook
+This notebook shows the difference between Code and Markdown cells.
+- Press Shift + Enter to render.
+
+Why it matters:
+- Markdown cells are for writing explanations and structure.
+- Markdown is documentation, not executable logic.
+
+Checkpoint:
+- Text appears formatted (title + normal sentence), not as raw symbols.
+
+Step 4: Switch Cell Types (Both Directions)
+
+What to do:
+- Select a Code cell and change it to Markdown.
+- Select a Markdown cell and change it to Code.
+- You can use toolbar dropdown or keyboard shortcuts in command mode:
+  - M for Markdown
+  - Y for Code
+
+Why it matters:
+- In real work, you often adjust cell type while organizing analysis.
+- Correct type prevents mistakes (for example, trying to execute explanation text).
+
+When to use each:
+- Code cell: calculations, Python commands, logic, outputs.
+- Markdown cell: title, context, interpretation, next steps.
+
+Step 5: Build a Clean, Structured Mini Notebook
+
+What to do:
+Create this 4-cell structure:
+
+1) Markdown title
+# Code vs Markdown Practice
+
+2) Markdown explanation
+In this notebook, I run simple Python in Code cells and explain results in Markdown cells.
+
+3) Code cell
+x = 5
+print("Value of x is", x)
+
+4) Markdown explanation of output
+The code created a variable x and printed its value.
+
+Why it matters:
+- Good notebooks are readable by others and by your future self.
+- Core rule:
+  - Code = what you do
+  - Markdown = why you do it
+
+Checkpoint:
+- Run all cells from top to bottom and verify flow is clear.
+
+Step 6: Self-Check (Understanding Test)
+
+What to do:
+Answer this in your notebook (Markdown cell):
+- What is the difference between Code and Markdown cells?
+
+Why it matters:
+- Explaining in your own words proves understanding better than memorizing.
+
+Suggested answer format:
+- Code cells execute Python and produce outputs.
+- Markdown cells explain ideas, steps, and findings, and do not execute Python logic.
+
+Step 7: 2-Minute Video Preparation Script
+
+What to do:
+Use this speaking plan:
+
+1) Intro (15-20 sec)
+- "In this demo, I will show Code cells and Markdown cells in Jupyter."
+
+2) Code cell demo (30-40 sec)
+- Create Code cell.
+- Run print("This is a code cell").
+- Say: "Code cells run Python and generate output."
+
+3) Markdown cell demo (30-40 sec)
+- Create Markdown cell with a title and one explanation sentence.
+- Render with Shift + Enter.
+- Say: "Markdown cells are for explanation and notebook structure."
+
+4) Switch cell type demo (20-25 sec)
+- Convert Code -> Markdown and Markdown -> Code.
+- Say when each type should be used.
+
+5) Clear difference statement (20-25 sec)
+- "Code = what I do in Python."
+- "Markdown = why I am doing it and what it means."
+
+Why it matters:
+- Speaking while demonstrating shows both practical skill and conceptual clarity.
+
+Milestone 4.8 Outcome
+
+You can now:
+- Create and run Code cells
+- Create and render Markdown cells
+- Switch between cell types correctly
+- Organize a notebook in a clean, readable structure
+- Clearly explain Code vs Markdown in your own words
+
+You are ready for the next milestone.
