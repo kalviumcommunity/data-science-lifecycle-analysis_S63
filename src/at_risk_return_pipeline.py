@@ -5,11 +5,11 @@ Focus: clean input-output function pipeline
 """
 
 
-def evaluate_risk(marks: float, attendance: float) -> str:
-    """Decision engine: accept inputs, return classification."""
-    if marks < 0 or marks > 100 or attendance < 0 or attendance > 100:
+def evaluate_student_risk(marks: float, attendance_percentage: float) -> str:
+    """Return risk classification using marks and attendance thresholds."""
+    if marks < 0 or marks > 100 or attendance_percentage < 0 or attendance_percentage > 100:
         return "Invalid Data"
-    if marks < 50 or attendance < 75:
+    if marks < 50 or attendance_percentage < 75:
         return "At Risk"
     return "Safe"
 
@@ -34,49 +34,52 @@ def format_result_line(result: dict[str, float | str]) -> str:
 
 def summarize_results(results: list[dict[str, float | str]]) -> dict[str, int]:
     """Return aggregate project metrics from result records."""
-    valid = 0
-    at_risk = 0
-    safe = 0
-    invalid = 0
+    valid_student_count = 0
+    at_risk_student_count = 0
+    safe_student_count = 0
+    invalid_record_count = 0
 
     for result in results:
-        status = str(result["status"])
-        if status == "Invalid Data":
-            invalid += 1
+        risk_status = str(result["status"])
+        if risk_status == "Invalid Data":
+            invalid_record_count += 1
             continue
-        valid += 1
-        if status == "At Risk":
-            at_risk += 1
-        elif status == "Safe":
-            safe += 1
+        valid_student_count += 1
+        if risk_status == "At Risk":
+            at_risk_student_count += 1
+        elif risk_status == "Safe":
+            safe_student_count += 1
 
-    return {"valid": valid, "at_risk": at_risk, "safe": safe, "invalid": invalid}
+    return {
+        "valid": valid_student_count,
+        "at_risk": at_risk_student_count,
+        "safe": safe_student_count,
+        "invalid": invalid_record_count,
+    }
 
 
 def main() -> None:
-    students = [
+    student_records = [
         {"name": "Aisha", "marks": 88, "attendance": 91},
         {"name": "Rohit", "marks": 49, "attendance": 79},
         {"name": "Neha", "marks": 72, "attendance": 70},
         {"name": "Karan", "marks": 83, "attendance": 86},
         {"name": "Isha", "marks": 95, "attendance": 98},
-        {"name": "BadRow", "marks": 130, "attendance": 55},
+        {"name": "InvalidRecordDemo", "marks": 130, "attendance": 55},
     ]
 
-    # Pipeline: evaluate -> build result -> format/aggregate in main flow
+    # Build results first, then format output and aggregate metrics.
     results: list[dict[str, float | str]] = []
-    for student in students:
+    for student in student_records:
         marks = float(student["marks"])
-        attendance = float(student["attendance"])
+        attendance_percentage = float(student["attendance"])
 
-        # Step 3/4: pass parameters, capture returned value.
-        status = evaluate_risk(marks, attendance)
-        result = build_result_record(student, status)
+        risk_status = evaluate_student_risk(marks, attendance_percentage)
+        result = build_result_record(student, risk_status)
         results.append(result)
 
     print("=== At-Risk Student Detection (Return Pipeline) ===")
     for result in results:
-        # Step 8: chain output of one function into another.
         print(format_result_line(result))
 
     summary = summarize_results(results)
