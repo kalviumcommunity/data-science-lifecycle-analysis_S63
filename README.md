@@ -1949,3 +1949,140 @@ You learned:
 - How function scope protects project stability
 
 You are ready for the next project step with stronger code structure.
+
+
+Milestone 4.19: Passing Data into Functions and Returning Results
+
+Project Context:
+- We already have student data, loops, and risk conditions
+- Now we upgrade function design to input-output pipeline style
+
+Step 1: Identify the Design Problem
+
+What to do:
+- Check whether current functions only `print` output instead of `return` values.
+
+Why it matters in this project:
+- Print-only functions are hard to reuse for counting, filtering, and aggregation.
+- Return-based functions become reusable decision units.
+
+Step 2: Upgrade Risk Function
+
+What to do:
+- Create decision function with parameters:
+  - `marks`
+  - `attendance`
+- Return one value:
+  - `At Risk`, `Safe`, or validation result
+
+Why it matters in this project:
+- This becomes a clean risk engine that can be reused across all student records.
+
+Step 3: Call Function with Real Arguments
+
+What to do:
+- Inside student loop, pass each student's marks and attendance to function.
+
+Why it matters in this project:
+- Each student has different inputs, so parameterized evaluation is required.
+
+Step 4: Store Returned Value
+
+What to do:
+- Save return value in a variable (for example, `status`).
+
+Why it matters in this project:
+- Stored outputs can be reused in multiple places:
+  - reporting
+  - counters
+  - downstream transformations
+
+Step 5: Use Returned Value in Main Logic
+
+What to do:
+- Use returned status to:
+  - print student result
+  - count at-risk students
+  - build summary
+
+Why it matters in this project:
+- Logic remains separate from presentation.
+- Main flow becomes easier to understand and maintain.
+
+Step 6: Avoid Common Mistakes
+
+Thinking check:
+- What happens if function only prints?
+
+Practical answer:
+- You cannot reuse output in other calculations.
+- You lose composability.
+
+Important note:
+- `return` exits function immediately after producing value.
+
+Step 7: Multi-Function Flow (Project Build)
+
+What to do:
+- Use multiple focused functions:
+  1. risk evaluator (returns status)
+  2. result record builder (returns structured dict)
+  3. output formatter (returns display string)
+  4. summarizer (returns aggregate metrics)
+
+Why it matters in this project:
+- This is modular system design used in real data pipelines.
+
+Step 8: Chain Functions
+
+What to do:
+- Pass output from one function into the next.
+- Example flow:
+  - evaluate -> build record -> format -> summarize
+
+Why it matters in this project:
+- Function chaining creates clear data pipelines and reduces complexity.
+
+Step 9: Real-World Scale Thinking
+
+Thinking challenge:
+- How does this design behave with 1000 students?
+
+Practical answer:
+- Loops handle volume.
+- Return-based functions keep logic reusable and testable.
+- Pipeline structure keeps code maintainable as rules grow.
+
+Step 10: 2-Minute Project Video Preparation
+
+Explain clearly:
+1. What parameters are
+2. Why we pass student data into functions
+3. What `return` does
+4. How returned values are reused in pipeline
+5. How this improves at-risk detection quality
+
+Presentation tip:
+- Show one student's flow from input -> status -> summary impact.
+
+Implemented Script
+
+- `src/at_risk_return_pipeline.py`
+
+Functions created:
+- `evaluate_risk(marks, attendance)` -> returns classification
+- `build_result_record(student, risk_status)` -> returns structured result
+- `format_result_line(result)` -> returns readable output line
+- `summarize_results(results)` -> returns aggregate metrics
+
+Milestone 4.19 Outcome
+
+You upgraded:
+- Function design from print-based to return-based pipeline architecture.
+
+You learned:
+- How parameters pass record-specific data into reusable functions
+- How returned values power downstream logic and summaries
+- How chained functions create clean modular data flow
+
+You are ready for the next level of project engineering.
