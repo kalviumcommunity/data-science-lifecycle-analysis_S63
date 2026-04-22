@@ -1059,3 +1059,139 @@ You can now:
 - Prepare projects for collaboration and reuse
 
 You can now create clean project structures confidently.
+
+
+Milestone 4.12: Organizing Raw Data, Processed Data, and Output Artifacts
+
+Use this guided flow to build correct data organization habits.
+
+Step 1: Concept Understanding
+
+What to do:
+- Ask yourself: "Do I know the difference between raw and processed data?"
+
+Why it matters:
+- Clear definitions prevent mistakes later.
+
+Simple explanation:
+- Raw data = original untouched data (must not be modified)
+- Processed data = cleaned or transformed version
+- Outputs = results such as plots, reports, or model artifacts
+
+Example:
+- Raw: original attendance file
+- Processed: cleaned attendance file with standardized column names
+- Output: final chart/report created from processed data
+
+Step 2: Create Data Folder Structure
+
+What to do:
+Use this structure inside your project:
+
+project/
+  data/
+    raw/
+    processed/
+  outputs/
+
+Why it matters:
+- `raw/` protects source-of-truth data
+- `processed/` stores transformation results
+- `outputs/` keeps final artifacts separate from data
+
+Step 3: Raw Data Rules
+
+What to do:
+Ask yourself: "Should raw data ever be edited?"
+
+Why it matters:
+- Raw data should always be read-only.
+- Keeping it unchanged lets you re-run workflows from a trusted source.
+
+Rule:
+- Never modify files directly inside `data/raw/`.
+
+Step 4: Processed Data Understanding
+
+What to do:
+- When data is cleaned, standardized, or transformed, save it into `data/processed/`.
+- Use clear names such as `cleaned_data`.
+
+Why it matters:
+- Processed data captures your preparation stage.
+- Clear naming improves traceability and teamwork.
+
+Step 5: Output Artifacts
+
+What to do:
+- Store plots, reports, and model results inside `outputs/`.
+
+Why it matters:
+- Outputs are results, not input data.
+- Separation keeps project stages clean and auditable.
+
+Step 6: Prevent Data Contamination
+
+What to do:
+Ask: "What happens if raw data is overwritten?"
+
+Why it matters:
+- You lose the original source.
+- Reproducibility breaks because nobody can reproduce from the same starting point.
+
+Correct flow:
+- `raw -> processed -> outputs`
+
+Step 7: Structure Visualization
+
+What to do:
+Represent your structure clearly:
+
+project/
+  data/
+    raw/
+    processed/
+  outputs/
+
+Why it matters:
+- Visual hierarchy reduces confusion and file misplacement.
+
+Step 8: Best Practices
+
+What to do:
+- Use clear names
+- Never mix folders by purpose
+- Keep workflow one-directional
+
+Why it matters:
+- Projects stay understandable and maintainable.
+- Collaboration becomes easier.
+
+Step 9: 2-Minute Video Preparation
+
+Use this speaking flow:
+
+1) Raw data folder (25-30 sec)
+- What it contains and why it must stay unchanged.
+
+2) Processed data folder (25-30 sec)
+- What transformations mean and why cleaned data is stored separately.
+
+3) Output folder (25-30 sec)
+- What artifacts belong here and why they should not mix with data.
+
+4) Importance of separation (25-30 sec)
+- Explain contamination risk and reproducibility impact.
+
+5) Closing (10-15 sec)
+- "I follow raw -> processed -> outputs to keep projects reliable."
+
+Milestone 4.12 Outcome
+
+You can now:
+- Distinguish raw, processed, and output stages clearly
+- Organize folders to prevent contamination
+- Maintain one-directional reproducible workflow
+- Manage project artifacts in a professional, collaboration-ready way
+
+You can now manage data organization properly and confidently.
