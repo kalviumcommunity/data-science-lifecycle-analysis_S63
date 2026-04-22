@@ -2086,3 +2086,112 @@ You learned:
 - How chained functions create clean modular data flow
 
 You are ready for the next level of project engineering.
+
+
+Milestone 4.20: Writing Readable Variable Names and Comments (PEP8 Basics)
+
+Code Review Target:
+- `src/at_risk_return_pipeline.py`
+
+Step 1: Identify Naming and Comment Issues
+
+What was changed:
+- Reviewed names and comments with code-review lens.
+- Flagged unclear or non-production comments and short aggregate variable names.
+
+Why it improves readability:
+- Better naming reduces confusion for new contributors and reviewers.
+
+Step 2: Rename Variables for Clarity
+
+What was changed:
+- `students` -> `student_records`
+- `attendance` -> `attendance_percentage`
+- `status` -> `risk_status`
+
+Why it improves readability:
+- Names now describe data purpose directly, reducing context guessing.
+
+Step 3: Apply PEP8 Snake Case Consistently
+
+What was changed:
+- Kept all names in snake_case and aligned naming style across function calls.
+
+Why it improves readability:
+- Consistent style improves scan speed and team-wide readability.
+
+Step 4: Improve Function Naming
+
+What was changed:
+- `evaluate_risk(...)` -> `evaluate_student_risk(...)`
+
+Why it improves readability:
+- Action + domain naming makes intent explicit during review.
+
+Step 5: Add Meaningful Comment (Why-focused)
+
+What was changed:
+- Replaced milestone-step comments with one concise pipeline intent comment:
+  - build results first, then format and aggregate.
+
+Why it improves readability:
+- Good comments explain design intent, not obvious syntax.
+
+Step 6: Remove Bad/Unnecessary Comments
+
+What was changed:
+- Removed training-step comments such as:
+  - "Step 3/4 ..."
+  - "Step 8 ..."
+
+Why it improves readability:
+- Non-functional tutorial notes clutter production code.
+
+Step 7: Readability and Structure Pass
+
+What was changed:
+- Expanded summary counters:
+  - `valid_student_count`
+  - `at_risk_student_count`
+  - `safe_student_count`
+  - `invalid_record_count`
+- Renamed demo record label:
+  - `BadRow` -> `InvalidRecordDemo`
+
+Why it improves readability:
+- Explicit naming makes flow understandable in under one minute.
+
+Step 8: Real-World Impact
+
+Why this matters professionally:
+- Clean naming speeds debugging.
+- Clear structure reduces onboarding time.
+- Maintainable code improves team collaboration.
+
+Step 9: Before vs After Summary
+
+Before:
+- generic names and milestone-step comments mixed into code
+
+After:
+- domain-specific naming, PEP8 consistency, intent-based comments
+
+Result:
+- Script is easier to review, maintain, and extend.
+
+Step 10: 2-Minute Video Preparation
+
+Explain:
+1. Why readable variable names matter in team projects
+2. What snake_case means in PEP8
+3. One bad vs good naming example from your script
+4. Why comments should explain logic intent (not obvious code)
+5. How these changes improved your at-risk system code quality
+
+Milestone 4.20 Outcome
+
+You improved:
+- Naming quality, PEP8 consistency, and comment quality in existing project code.
+
+You achieved:
+- Review-ready, professional readability without changing core features.
