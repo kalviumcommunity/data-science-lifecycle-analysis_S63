@@ -1,3 +1,107 @@
+# Data Science Lifecycle Analysis (S63)
+
+This repository contains beginner-friendly milestone work for setting up and using Jupyter Notebook in a clean, reusable data science project structure.
+
+## Objective
+
+Build practical confidence in:
+- launching Jupyter Notebook
+- using Code and Markdown cells
+- controlling kernels (run, interrupt, restart)
+- writing clear notebook documentation
+- organizing project folders for collaboration
+
+## Project Structure
+
+```text
+data-science-lifecycle-analysis_S63/
+├── data/
+│   └── .gitkeep
+├── notebooks/
+│   ├── M4_7_jupyter_interface.ipynb
+│   ├── M4_8_code_vs_markdown.ipynb
+│   ├── M4_9_kernel_control.ipynb
+│   ├── M4_10_markdown_basics.ipynb
+│   └── M4_11_project_structure.ipynb
+├── outputs/
+│   └── .gitkeep
+├── src/
+│   └── .gitkeep
+└── README.md
+```
+
+## Environment
+
+- OS: Windows
+- Python: managed through Anaconda
+- Environment: `base`
+- Tool: Jupyter Notebook
+
+## How to Run
+
+From repository root:
+
+```bash
+conda run -n base jupyter notebook
+```
+
+Then open notebooks from the `notebooks/` folder.
+
+## Milestones Implemented
+
+### Milestone 4.7 - Launching Jupyter & Interface Basics
+- Notebook: `notebooks/M4_7_jupyter_interface.ipynb`
+- Covers:
+  - launch from terminal
+  - home interface elements
+  - create/open/save/close notebook
+  - run first Python cell
+
+### Milestone 4.8 - Code Cells vs Markdown Cells
+- Notebook: `notebooks/M4_8_code_vs_markdown.ipynb`
+- Covers:
+  - creating/running Code cells
+  - creating/rendering Markdown cells
+  - switching cell types
+  - structure rule: Code = what, Markdown = why
+
+### Milestone 4.9 - Running, Restarting, Interrupting Kernels
+- Notebook: `notebooks/M4_9_kernel_control.ipynb`
+- Covers:
+  - kernel concept and memory
+  - execution order effects
+  - hidden state
+  - restart vs interrupt usage
+
+### Milestone 4.10 - Markdown: Headings, Lists, Code Blocks
+- Notebook: `notebooks/M4_10_markdown_basics.ipynb`
+- Covers:
+  - headings and subheadings
+  - ordered/unordered lists
+  - inline code and fenced code blocks
+  - combining Markdown and Code for readability
+
+### Milestone 4.11 - Data Science Folder Structure
+- Notebook: `notebooks/M4_11_project_structure.ipynb`
+- Covers:
+  - root folder and standard subfolders
+  - separation of data, code, notebooks, and outputs
+  - structure for reuse and collaboration
+
+## Verification Checklist
+
+- [ ] Jupyter launches from terminal
+- [ ] All milestone notebooks open successfully
+- [ ] Cells run in expected order
+- [ ] Markdown renders correctly
+- [ ] Project folders are clean and logically separated
+
+## Key Learning Outcomes
+
+- I can create and manage Jupyter notebooks confidently.
+- I understand when to use Code cells and Markdown cells.
+- I can control kernels (run, interrupt, restart) safely.
+- I can organize a clean, collaboration-ready data science project.
 1. Understanding the Lifecycle: Question → Data → Insight
 
 Data science does not begin with code or models—it begins with a clear question. A well-defined question gives direction to the entire analysis. Without a clear question, the work becomes unfocused and may lead to irrelevant or misleading results. For example, instead of asking “What does the data say?”, a better question would be “Which students are at risk of underperforming and why?”
@@ -808,3 +912,150 @@ You can now:
 - Explain clearly when to use Markdown vs Code
 
 You are ready for the next milestone.
+
+
+Milestone 4.11: Creating a Project Folder Structure for Data Science Work
+
+Use this as a beginner-friendly guided practice. Follow one step at a time.
+
+Step 1: Concept Understanding
+
+What to do:
+- Ask yourself: "Have I created project folders before?"
+- Write a one-line answer in your notes.
+
+Why it matters:
+- Project structure prevents confusion.
+- It keeps work organized, reusable, and easier to maintain.
+
+Simple idea:
+- Good structure saves time later.
+
+Step 2: Create Root Folder
+
+What to do:
+- Create one main project folder.
+- Example name:
+student-performance-analysis
+
+Why it matters:
+- This root folder is the main container for everything in your project.
+- It keeps all related files in one place.
+
+Step 3: Create Standard Subfolders
+
+What to do:
+Inside the root folder, create these subfolders one by one:
+- data/
+- notebooks/
+- src/ (or scripts/)
+- outputs/
+
+Why it matters:
+- data/ -> raw and processed datasets
+- notebooks/ -> Jupyter notebooks for analysis
+- src/ or scripts/ -> reusable Python logic
+- outputs/ -> charts, reports, final artifacts
+
+Key rule:
+- Separate data, code, and results.
+
+Step 4: Structure Understanding Check
+
+What to do:
+Answer these quickly:
+- Where should raw files go?
+- Where should notebook files go?
+- Where should reusable Python files go?
+- Where should plots/reports go?
+
+Why it matters:
+- Correct placement avoids messy projects.
+- Important principles:
+  - Never mix data and code in random folders
+  - Never overwrite raw data directly
+
+Correct mapping:
+- Raw data -> data/
+- Notebooks -> notebooks/
+- Reusable code -> src/ or scripts/
+- Results -> outputs/
+
+Step 5: Best Practices for Folder Design
+
+What to do:
+Apply these naming habits:
+- Use lowercase folder names
+- Use clear names
+- Avoid deep nested folders unless necessary
+
+Why it matters:
+- Improves readability and navigation.
+- Makes your project easier for others to understand.
+
+Good examples:
+- data/
+- notebooks/
+- src/
+- outputs/
+
+Step 6: Collaboration Thinking
+
+What to do:
+Ask:
+- "If a teammate opens this project, can they understand it in 30 seconds?"
+
+Why it matters:
+- A good structure should be self-explanatory.
+- Collaboration becomes smoother when folder purpose is obvious.
+
+Step 7: Visualize the Hierarchy
+
+What to do:
+Write your structure in tree form:
+
+project/
+  data/
+  notebooks/
+  src/
+  outputs/
+
+Why it matters:
+- Seeing hierarchy clearly helps avoid misplacing files.
+- Tree view builds strong project organization habits.
+
+Step 8: 2-Minute Video Preparation
+
+Use this simple speaking flow:
+
+1) Root folder intro (20-25 sec)
+- "This is my main project folder, which contains all project work."
+
+2) Subfolder walkthrough (45-55 sec)
+- data/: data files
+- notebooks/: analysis notebooks
+- src/: reusable code
+- outputs/: results and reports
+
+3) Why separation matters (25-30 sec)
+- "Separating data, code, and results keeps projects clean and reduces confusion."
+
+4) Collaboration angle (20-25 sec)
+- "A teammate can quickly understand and continue this project."
+
+5) Closing line (10-15 sec)
+- "Good structure is the foundation of reliable data science work."
+
+Why this helps:
+- You explain your understanding in simple words, not memorized definitions.
+
+Milestone 4.11 Outcome
+
+You can now:
+- Explain why folder structure matters
+- Create a clean project root folder
+- Organize standard data science subfolders
+- Separate data, code, and outputs correctly
+- Prepare projects for collaboration and reuse
+
+You can now create clean project structures confidently.
