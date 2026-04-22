@@ -1195,3 +1195,125 @@ You can now:
 - Manage project artifacts in a professional, collaboration-ready way
 
 You can now manage data organization properly and confidently.
+
+
+Milestone 4.13: Creating and Running a First Python Script for Data Analysis
+
+This milestone builds a mini real-world style script: **Student Performance Analyzer**.
+
+Step 1: Setup and File Placement
+
+What to do:
+- Keep scripts in `src/` (or `scripts/`) inside the project.
+- Create: `src/student_analysis.py`.
+
+Why it matters:
+- Structured placement keeps projects clean and team-friendly.
+- Scripts in a dedicated code folder are easier to test and reuse.
+
+Step 2: Script Structure
+
+What to do:
+- Organize script with small functions:
+  - `analyze_student_performance(...)`
+  - `print_report(...)`
+  - `main()`
+- Add `if __name__ == "__main__":` entrypoint.
+
+Why it matters:
+- Clean structure improves readability and maintenance.
+- `main()` flow mirrors professional script design.
+
+Step 3: Core Analysis Logic
+
+What to do:
+- Store sample student data (name + marks).
+- Compute:
+  - average marks
+  - highest scorer
+  - lowest scorer
+
+Why it matters:
+- This simulates a simple but meaningful data analysis task.
+- You practice transforming input data into actionable summary insights.
+
+Step 4: Output Formatting
+
+What to do:
+- Print a clear report with labels and aligned meaning.
+
+Why it matters:
+- Good output formatting improves communication.
+- Real tools should produce readable results, not confusing logs.
+
+Step 5: Run the Script
+
+What to do:
+From project root, run:
+`python src/student_analysis.py`
+
+Why it matters:
+- Scripts execute top-to-bottom in a clean run.
+- Unlike notebooks, scripts avoid hidden state between executions.
+
+Step 6: Debugging Mindset
+
+What to do:
+- If errors appear, read the traceback carefully.
+- Fix one issue at a time and run again.
+
+Why it matters:
+- Debugging is a core engineering skill.
+- Confidence comes from iterative fix-and-run cycles.
+
+Step 7: Script vs Notebook (Critical Thinking)
+
+Ask yourself:
+- Why not use a notebook here?
+
+Answer:
+- Notebook: best for exploration and experimentation.
+- Script: best for repeatable, automation-friendly execution.
+
+Why it matters:
+- Choosing the right format improves project quality and speed.
+
+Step 8: Upgrade Thinking Challenge
+
+Ask yourself:
+- How can this script be improved?
+
+Ideas:
+- Add more students
+- Store subject-wise marks
+- Improve report formatting
+- Convert logic into reusable module + CLI arguments
+
+Why it matters:
+- Growth starts when you move from "working code" to "better design."
+
+Step 9: 2-Minute Video Preparation
+
+Include these points:
+1. What is a Python script?
+2. What this script analyzes
+3. How you ran it from terminal
+4. What the output means
+5. Why scripts matter for automation and reproducibility
+
+Presentation tip:
+- Explain naturally in simple words. Do not memorize definitions.
+
+Milestone 4.13 Outcome
+
+You built:
+- `src/student_analysis.py` with clean structure and meaningful logic.
+
+You learned:
+- Proper script placement in project folders
+- Basic data analysis in a script
+- Clear output formatting
+- Script execution flow from terminal
+- Script vs notebook trade-offs
+
+You can now build and run simple analysis scripts independently.
