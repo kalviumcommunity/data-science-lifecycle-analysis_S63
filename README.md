@@ -1428,3 +1428,118 @@ You learned:
 - How to present clear, structured output
 
 You can now handle numbers and strings confidently in Python projects.
+
+
+Milestone 4.15: Working with Python Lists, Tuples, and Dictionaries
+
+Mini Project: **Student Record Management Mini System**
+
+Step 1: Lists (Mutable + Ordered)
+
+What to do:
+- Create a list of student names.
+- Access elements by index.
+- Add and remove students.
+
+Why it matters:
+- Lists are best for dynamic data that changes over time.
+- Student rosters are real-world examples of mutable collections.
+
+Step 2: Tuples (Immutable + Ordered)
+
+What to do:
+- Create a tuple of fixed subjects.
+- Attempt to modify one element to observe the error.
+
+Why it matters:
+- Tuples protect fixed configuration-like data.
+- Immutability prevents accidental changes in critical constants.
+
+Step 3: Dictionaries (Key-Value Mapping)
+
+What to do:
+- Create dictionary mapping: `name -> marks`.
+- Access marks by key.
+- Add a new student and update existing marks.
+
+Why it matters:
+- Dictionaries model real entities and relationships efficiently.
+- Lookup/update by key is fast and readable.
+
+Step 4: Combine Structures
+
+What to do:
+- Use all three together:
+  - List for roster
+  - Tuple for fixed subjects
+  - Dictionary for marks mapping
+
+Why it matters:
+- Real systems rarely use one structure alone.
+- Good design means selecting the right structure per need.
+
+Step 5: Structured Output
+
+What to do:
+- Print a clean table-style report of student names and marks.
+
+Why it matters:
+- Readable output is essential for communication, debugging, and demos.
+
+Step 6: Choosing Structures (Reasoning Check)
+
+Thinking questions:
+- Why list for students?
+- Why tuple for subjects?
+- Why dictionary for marks?
+
+Expected reasoning:
+- List -> dynamic collection
+- Tuple -> fixed collection
+- Dictionary -> mapped relationship
+
+Step 7: Improvement Thinking (Developer Mindset)
+
+Challenge prompts:
+- What if more subjects are added?
+- What if each student has subject-wise marks?
+
+Upgrade direction:
+- Move to nested dictionary such as:
+  - `student -> {subject -> marks}`
+- Keep structure scalable without breaking readability.
+
+Step 8: 2-Minute Video Preparation
+
+Cover in simple words:
+1. What is a list
+2. What is a tuple
+3. What is a dictionary
+4. Key differences and use-cases
+5. What your mini project does end-to-end
+
+Video tip:
+- Explain your data-structure choices, not just syntax.
+
+Implemented Script
+
+- `src/student_record_management.py`
+
+What this script demonstrates:
+- list access/add/remove
+- tuple immutability error handling
+- dictionary access/add/update
+- combined structured reporting
+- deeper upgrade path via subject-wise nested mapping
+
+Milestone 4.15 Outcome
+
+You built:
+- A meaningful collection-based mini system for managing student records.
+
+You learned:
+- How list, tuple, and dictionary differ in behavior and use-case.
+- How to combine multiple structures in one workflow.
+- How to think about scalable data modeling beyond basics.
+
+You can now use Python collections confidently in practical projects.
