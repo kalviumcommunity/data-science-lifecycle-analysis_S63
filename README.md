@@ -1317,3 +1317,114 @@ You learned:
 - Script vs notebook trade-offs
 
 You can now build and run simple analysis scripts independently.
+
+
+Milestone 4.14: Understanding Python Numeric and String Data Types
+
+Mini Project: **Student Info & Score Analyzer**
+
+Step 1: Numeric Basics
+
+What to do:
+- Create integer and float variables for marks.
+- Perform addition and division.
+
+Why it matters:
+- `int` represents whole numbers, `float` represents decimal values.
+- Division commonly returns float because averages are often not whole numbers.
+
+Step 2: String Basics
+
+What to do:
+- Create string variables for student name and labels.
+- Build output messages using strings.
+
+Why it matters:
+- Strings store text used in reporting and user-facing messages.
+- Every real tool needs readable text output.
+
+Step 3: Mixing Types (Critical)
+
+What to do:
+- Combine student name (string) and average marks (number) in one output line.
+
+Why it matters:
+- Mixing text and numbers without conversion causes type mismatch errors.
+- Understanding this prevents common beginner bugs.
+
+Step 4: Type Conversion
+
+What to do:
+- Convert number to string using `str(...)` for text output.
+- Convert text to number using `int(...)` or `float(...)` when needed.
+
+Why it matters:
+- Real inputs (forms/files) often arrive as text.
+- Safe conversion is essential before calculations.
+
+Step 5: Type Checking
+
+What to do:
+- Use `type(variable)` to inspect data types.
+
+Why it matters:
+- Type checks help debugging and prevent silent logic mistakes.
+
+Step 6: Build the Mini Project
+
+What to do:
+- Use:
+  - student name (string)
+  - marks in 3 subjects (numbers)
+- Calculate total and average.
+- Print a clear result sentence.
+
+Why it matters:
+- This simulates a realistic, small data analysis workflow.
+
+Implemented file:
+- `src/student_info_score_analyzer.py`
+
+Step 7: Improve Output
+
+What to do:
+- Print labeled, structured output sections.
+- Keep number formatting consistent (for example, 2 decimals).
+
+Why it matters:
+- Clean output improves clarity for users, teammates, and demos.
+
+Step 8: Error Awareness
+
+What to do:
+- Think: what if marks come as strings?
+
+Why it matters:
+- String marks cannot be safely used for arithmetic until converted.
+- Incorrect handling leads to wrong results or runtime errors.
+
+Step 9: 2-Minute Video Preparation
+
+Cover these points:
+1. What numeric data types are (`int`, `float`)
+2. What strings are (`str`)
+3. Difference between numbers and text
+4. Why type conversion is needed
+5. What the mini project calculates and prints
+
+Presentation guidance:
+- Explain naturally with simple words.
+- Focus on understanding, not memorized definitions.
+
+Milestone 4.14 Outcome
+
+You built:
+- `src/student_info_score_analyzer.py` (mini real-world style analyzer)
+
+You learned:
+- How to use integers, floats, and strings correctly
+- How to combine and convert data types safely
+- How to inspect types for debugging
+- How to present clear, structured output
+
+You can now handle numbers and strings confidently in Python projects.
