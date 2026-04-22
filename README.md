@@ -1673,3 +1673,146 @@ You learned:
 - How to validate edge cases before classification
 
 You can now write condition-based data logic confidently.
+
+
+Milestone 4.17: For Loops and While Loops in At-Risk Student Detection System
+
+Project Context:
+- We process multiple student records (name, marks, attendance)
+- We identify at-risk students using loop + condition logic
+
+Step 1: Data Setup (Project Base)
+
+What to do:
+- Create student records as a list of dictionaries.
+- Each record includes:
+  - `name`
+  - `marks`
+  - `attendance`
+
+Why it matters in this project:
+- At-risk detection is never one-student logic.
+- Real systems need to process many records consistently.
+
+Step 2: `for` Loop for Batch Processing
+
+What to do:
+- Iterate through all students using a `for` loop.
+- Print each student's key details.
+
+Why it matters in this project:
+- `for` loops automate record-by-record processing.
+- This is how the system scales from a few to many students.
+
+Step 3: Add Risk Identification Logic
+
+What to do:
+- Inside loop, apply condition checks:
+  - marks below threshold
+  - attendance below threshold
+- Print `At Risk` or `Safe`.
+
+Why it matters in this project:
+- This is the core decision engine that flags students for intervention.
+
+Step 4: Aggregate Insights
+
+What to do:
+- Track:
+  - total valid students
+  - at-risk count
+
+Why it matters in this project:
+- Stakeholders need summary insights, not only row-level output.
+- Counts support planning and resource allocation.
+
+Step 5: `while` Loop Integration
+
+What to do:
+- Add monitoring loop to repeat detection cycles until exit condition.
+
+Why it matters in this project:
+- `while` loop supports controlled repeated checks (for example, periodic monitoring).
+
+Step 6: Control Flow with `break` and `continue`
+
+What to do:
+- Use `continue` to skip invalid rows safely.
+- Use `break` to exit loop when cycle limit or exit condition is met.
+
+Why it matters in this project:
+- Real data pipelines include noisy rows; skipping bad records prevents crashes.
+- Explicit exits prevent runaway monitoring loops.
+
+Step 7: Infinite Loop Awareness
+
+What to do:
+- Ensure loop condition changes (for example, increment cycle counter).
+- Define clear stop condition.
+
+Why it matters in this project:
+- Without exit control, monitoring process can freeze resources.
+
+Step 8: Clean Educator-Friendly Output
+
+What to do:
+- Print structured report:
+  - student name
+  - marks
+  - attendance
+  - risk status
+- Include summary section.
+
+Why it matters in this project:
+- Educators need clear, actionable output for intervention decisions.
+
+Step 9: Data Engineer Thinking (Scale Question)
+
+Thinking challenge:
+- How does this handle 1000+ students?
+
+Practical answer:
+- Keep loop logic simple and deterministic.
+- Validate/skip bad rows with `continue`.
+- Keep reporting clean and aggregate-focused.
+
+Why it matters in this project:
+- Clean loop design is foundation for scalable data systems.
+
+Step 10: 2-Minute Project-Focused Video Preparation
+
+Explain these points naturally:
+1. Why loops are required in this student-risk project
+2. How `for` loop processes all students
+3. How conditions classify `At Risk` vs `Safe`
+4. How `while` loop manages repeated monitoring
+5. What output is produced for teachers/mentors
+
+Presentation tip:
+- Walk through one student record to show how decision path works.
+
+Implemented Script
+
+- `src/at_risk_loop_engine.py`
+
+What this script demonstrates:
+- list-of-dictionaries student dataset
+- `for` loop batch processing
+- condition-based risk classification
+- aggregate counters (total + at-risk)
+- `while` monitoring loop
+- `break` and `continue` control
+- invalid-row handling and readable reporting
+
+Milestone 4.17 Outcome
+
+You built:
+- The loop-processing core of an At-Risk Student Detection System.
+
+You learned:
+- How `for` and `while` loops serve different project needs
+- How loop + condition logic identifies at-risk students
+- How to avoid infinite loops with proper control flow
+- How to produce readable operational output
+
+You are ready for the next project step.
