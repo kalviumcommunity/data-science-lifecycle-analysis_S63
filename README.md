@@ -108,3 +108,39 @@ This makes your contribution more valuable and aligned with the project goals.
 ✅ Conclusion
 
 Reading a data science repository is an essential skill that goes beyond just understanding code. It involves interpreting the project’s purpose, structure, and logic. By treating the repository as a story and analyzing it step by step, we can better understand the work, identify gaps, and contribute effectively.
+
+
+
+Environment Setup (Milestone 4.5)
+Operating System
+
+Windows 10 (or your OS)
+
+Python Installation
+
+Command:
+
+python --version
+
+Output:
+
+Python 3.11.5
+Anaconda Installation
+
+Command:
+
+conda --version
+
+Output:
+
+conda 23.x.x
+Environment Verification
+
+Command:
+
+python
+
+Output:
+
+>>> print("Hello")
+Hello
