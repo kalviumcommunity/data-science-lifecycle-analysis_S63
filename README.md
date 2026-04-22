@@ -1543,3 +1543,133 @@ You learned:
 - How to think about scalable data modeling beyond basics.
 
 You can now use Python collections confidently in practical projects.
+
+
+Milestone 4.16: Writing Conditional Statements for Data Logic
+
+Mini Project: **Student Performance Decision System**
+
+Step 1: Basic `if` Statement
+
+What to do:
+- Start with one condition such as `if marks > 50`.
+
+Why it matters:
+- A condition is a decision point.
+- Code inside `if` runs only when condition is true.
+
+Step 2: `if-else` Logic
+
+What to do:
+- Add `else` to handle opposite outcome.
+
+Why it matters:
+- `if-else` handles both true and false paths.
+- Prevents missing cases in decision systems.
+
+Step 3: `if-elif-else` Grading Flow (Core)
+
+What to do:
+- Add ordered grading logic:
+  - `marks >= 90` -> Excellent
+  - `marks >= 75` -> Good
+  - `marks >= 50` -> Average
+  - else -> Needs Improvement
+- Add fail rule: if `marks < 35` -> Fail
+
+Why it matters:
+- `elif` supports multiple branches cleanly.
+- Order matters because the first true branch is selected.
+
+Step 4: Logical Operators (`and`, `or`, `not`)
+
+What to do:
+- Extend logic using attendance:
+  - `marks >= 75 and attendance > 80`
+  - `attendance < 60 or marks < 55`
+  - `not is_regular`
+
+Why it matters:
+- `and` requires all conditions true.
+- `or` requires at least one true.
+- `not` reverses condition meaning.
+
+Step 5: Real-World Condition Overlap Thinking
+
+What to do:
+- Ask: what if multiple conditions can match?
+
+Why it matters:
+- Wrong condition order produces wrong categories.
+- Example: checking `marks >= 50` before `marks >= 90` would misclassify top performers.
+
+Step 6: Output Formatting
+
+What to do:
+- Print clean report lines including:
+  - student name
+  - marks
+  - attendance
+  - final category
+
+Why it matters:
+- Clear output improves interpretability in real systems.
+
+Step 7: Edge Case Validation
+
+What to do:
+- Add validation:
+  - marks < 0 or marks > 100 -> invalid
+  - attendance < 0 or attendance > 100 -> invalid
+
+Why it matters:
+- Real-world data can be noisy and incorrect.
+- Validation protects logic correctness.
+
+Step 8: Debugging Mindset
+
+What to do:
+- If result is unexpected:
+  1) print current values
+  2) check condition order
+  3) check indentation and branch nesting
+
+Why it matters:
+- Most conditional bugs come from logic order and indentation errors.
+
+Step 9: 2-Minute Video Preparation
+
+Cover clearly:
+1. What conditional statements are
+2. Difference between `if`, `elif`, `else`
+3. Why condition order matters
+4. How `and`, `or`, `not` are used
+5. What the decision system classifies and why
+
+Presentation tip:
+- Explain with one example student and walk through branch selection.
+
+Implemented Script
+
+- `src/student_performance_decision_system.py`
+
+What it demonstrates:
+- full `if/elif/else` grade classification
+- separate fail logic
+- logical operators with attendance rules
+- `not` operator with attendance flag
+- validation for invalid marks/attendance
+- structured output + debug guidance
+
+Milestone 4.16 Outcome
+
+You built:
+- A decision-based student classification mini system using conditions.
+
+You learned:
+- How to control flow using `if`, `elif`, and `else`
+- How to apply `and`, `or`, and `not` correctly
+- Why condition order and indentation are critical
+- How to validate edge cases before classification
+
+You can now write condition-based data logic confidently.
