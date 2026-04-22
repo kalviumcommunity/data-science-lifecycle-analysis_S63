@@ -482,3 +482,162 @@ You can now:
 - Clearly explain Code vs Markdown in your own words
 
 You are ready for the next milestone.
+
+
+Milestone 4.9: Running, Restarting, and Interrupting Jupyter Kernels
+
+Use this as a beginner-safe guided practice. Follow step by step.
+
+Step 1: What a Kernel Is
+
+What to do:
+- Open a Jupyter notebook.
+- Look at the top-right kernel indicator (for example, Python 3).
+
+Why it matters:
+- Kernel = engine that runs code.
+- It stores variables in memory while your session is active.
+
+Quick understanding line:
+- If kernel memory changes, notebook behavior can change.
+
+Step 2: Run Cells in Order
+
+What to do:
+Create these three Code cells:
+
+Cell 1:
+a = 10
+
+Cell 2:
+b = 5
+
+Cell 3:
+print("Sum:", a + b)
+
+Run in order: Cell 1 -> Cell 2 -> Cell 3 using Shift + Enter.
+
+Why it matters:
+- Running in order builds state correctly.
+- Kernel remembers variables from earlier cells.
+
+Now test execution order:
+- Restart kernel (Kernel -> Restart).
+- Run only Cell 3 first.
+
+Expected observation:
+- Error because a and b are not defined yet.
+
+Why this happens:
+- Execution order matters because variables must exist before use.
+
+Step 3: Demonstrate Hidden State
+
+What to do:
+Create two Code cells:
+
+Cell A:
+name = "Data Science"
+
+Cell B:
+print("Learning:", name)
+
+Run A then B (works).
+Now restart kernel and run only B.
+
+Ask yourself:
+- What changed?
+
+Expected result:
+- You get a NameError for name.
+
+Why it matters:
+- Hidden state means notebook seemed fine only because old variables were stored in memory.
+- This can confuse beginners if they do not run from top to bottom.
+
+Step 4: Restart Kernel and Re-run
+
+What to do:
+- Go to Kernel -> Restart Kernel (or Restart & Clear Output, if available).
+- Then run all cells from top in sequence.
+
+Why it matters:
+- Restart clears memory.
+- Re-running from top checks reproducibility (anyone can get same result from a clean state).
+
+Best practice:
+- Before sharing/submitting notebook, restart and run all cells once.
+
+Step 5: Interrupt a Running Cell
+
+What to do:
+Create a safe long-running cell:
+
+import time
+while True:
+    print("Running...")
+    time.sleep(1)
+
+Run it, wait 2-3 seconds, then click Kernel -> Interrupt (or stop button).
+
+Why it matters:
+- Interrupt stops the currently running code.
+- It does NOT reset all kernel memory.
+
+Important safety note:
+- Use this only for practice and interrupt quickly.
+
+Step 6: Restart vs Interrupt (Core Difference)
+
+Interrupt means:
+- Stop current running task.
+- Keep existing memory/variables (in many cases).
+
+Restart means:
+- Stop everything and start a fresh kernel.
+- Clear all variables from memory.
+
+When to interrupt:
+- Code is stuck, too slow, or infinite loop is running.
+
+When to restart:
+- Notebook state is messy, errors are confusing, or you want a clean reproducible run.
+
+Step 7: 2-Minute Video Preparation
+
+Use this speaking flow:
+
+1) Kernel meaning (20-25 sec)
+- "Kernel is the engine that runs Python code and stores variables in memory."
+
+2) Running cells (25-30 sec)
+- Show simple cells with variables.
+- Run in order and explain why order matters.
+
+3) Hidden state (20-25 sec)
+- Run dependent cell after restart and show NameError.
+- Explain hidden state in simple words.
+
+4) Interrupt demo (20-25 sec)
+- Start long loop.
+- Interrupt and explain: stop task, memory not fully reset.
+
+5) Restart demo (20-25 sec)
+- Restart kernel.
+- Explain: clears memory and gives clean start.
+
+6) Clear difference statement (15-20 sec)
+- "Interrupt = stop current execution."
+- "Restart = reset the whole session."
+
+Milestone 4.9 Outcome
+
+You can now:
+- Explain what a kernel is
+- Run cells in correct order
+- Understand execution-order effects
+- Detect hidden state issues
+- Use interrupt to stop running code
+- Use restart to reset memory and ensure reproducibility
+
+You can control Jupyter kernels confidently now.
