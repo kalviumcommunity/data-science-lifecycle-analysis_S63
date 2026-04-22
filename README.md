@@ -1816,3 +1816,136 @@ You learned:
 - How to produce readable operational output
 
 You are ready for the next project step.
+
+
+Milestone 4.18: Defining and Calling Functions in At-Risk Student Detection System
+
+Project Context:
+- We already have data + loops + conditional logic
+- Now we modularize repetitive logic using functions
+
+Step 1: Identify Repetition
+
+What to do:
+- Spot repeated parts in loop-based code:
+  - risk check conditions
+  - output formatting statements
+
+Why it matters in this project:
+- Repetition makes code harder to maintain.
+- Function extraction improves clarity and consistency.
+
+Step 2: Create First Function (Core Risk Engine)
+
+What to do:
+- Build function:
+  - input: `marks`, `attendance`
+  - output: `At Risk` / `Safe` (or validation result)
+
+Why it matters in this project:
+- This is the project's central decision unit.
+- One trusted function avoids duplicated logic bugs.
+
+Step 3: Call Function in Loop
+
+What to do:
+- Inside student loop, call risk function for each record.
+
+Why it matters in this project:
+- Function reuse lets same logic process all students uniformly.
+
+Step 4: Use Parameters Properly
+
+What to do:
+- Pass current student's values (`marks`, `attendance`) into function.
+
+Why it matters in this project:
+- Parameterized functions are flexible and reusable.
+- Hardcoded logic fails when data changes.
+
+Step 5: Create Output Function
+
+What to do:
+- Build a second function to format and return output text:
+  - name + marks + attendance + status
+
+Why it matters in this project:
+- Separating decision logic from presentation improves readability.
+- Easier to upgrade output format later.
+
+Step 6: Function Structure Thinking
+
+Thinking question:
+- Why not write everything in one block?
+
+Practical answer:
+- Functions create modular units:
+  - easier to debug
+  - easier to test
+  - easier to scale with new features
+
+Step 7: Function Scope Awareness
+
+What to do:
+- Observe local variables inside function-only context.
+
+Why it matters in this project:
+- Local scope prevents accidental cross-function state mutation.
+- Safer structure for growing scripts.
+
+Step 8: Combine into Structured Build
+
+What to do:
+- Organize script as:
+  1) data setup
+  2) loop over students
+  3) function calls for risk and output
+  4) summary metrics
+
+Why it matters in this project:
+- This mirrors real production-style data processing scripts.
+
+Step 9: Improvement Thinking
+
+Challenge prompts:
+- What if we add subject-wise marks?
+- What if risk rules become multi-factor?
+
+Why it matters in this project:
+- Function boundaries make extensions safer and faster.
+- You can update `check_risk()` without rewriting full script.
+
+Step 10: 2-Minute Project Video Preparation
+
+Explain clearly:
+1. What function means in your own words
+2. Why functions are needed in this project
+3. How `check_risk()` classifies students
+4. How output function improves readability
+5. What the full system does from input to summary
+
+Presentation tip:
+- Walk through one student record and show function flow.
+
+Implemented Script
+
+- `src/at_risk_function_engine.py`
+
+Functions created:
+- `check_risk(marks, attendance)` -> decision logic
+- `build_student_output(...)` -> formatted educator output
+- `process_students(students)` -> orchestration + aggregation
+- `scope_demo()` -> local variable scope awareness
+
+Milestone 4.18 Outcome
+
+You built:
+- A modular function-based At-Risk Student Detection workflow.
+
+You learned:
+- How to define and call reusable functions
+- How parameters make logic flexible
+- How separating logic and output improves code quality
+- How function scope protects project stability
+
+You are ready for the next project step with stronger code structure.
