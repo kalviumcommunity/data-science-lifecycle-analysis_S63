@@ -194,3 +194,143 @@ Example Output:
 
 print("Jupyter Working")
 Jupyter Working
+
+
+Milestone 4.7: Launching Jupyter Notebook and Understanding its Interface
+
+1) Confirm Working Directory
+
+What to do:
+Run:
+pwd
+
+Then confirm your target project folder:
+/c/Users/Dell/OneDrive/Desktop/data-science-lifecycle-analysis_S63
+
+Why it matters:
+Jupyter opens in the folder where you start it. Starting in the right folder keeps notebooks organized.
+
+2) Move to the Project Folder
+
+What to do:
+If needed, run:
+cd /c/Users/Dell/OneDrive/Desktop/data-science-lifecycle-analysis_S63
+
+Why it matters:
+This ensures all notebook files are created inside your project, not in random locations.
+
+3) Activate Conda Environment
+
+What to do:
+Use:
+conda activate base
+
+If activation is not available in your shell, use:
+conda run -n base <command>
+
+Why it matters:
+The active environment controls Python version and installed packages used by your notebook.
+
+4) Launch Jupyter Notebook
+
+What to do:
+Run:
+conda run -n base jupyter notebook
+
+Why it matters:
+This starts the notebook server and opens the Jupyter Home page in your browser.
+
+5) Understand Jupyter Home Interface
+
+What to do:
+On the Home page, identify:
+- File/folder list
+- Current path (top area)
+- New button (top-right)
+- Upload button
+
+Why it matters:
+Jupyter Home is your notebook file manager. You use it to create, open, and organize work.
+
+6) Navigate Folders Correctly
+
+What to do:
+- Click a folder name to go inside
+- Use the path/breadcrumb to go back to parent folder
+
+Why it matters:
+Correct navigation helps you avoid creating notebooks in the wrong directory.
+
+7) Create and Open a Notebook
+
+What to do:
+Click New -> Python 3 (ipykernel) (or the available Python kernel).
+
+Why it matters:
+A notebook needs a kernel to execute code. Python kernel means cells run with Python.
+
+8) Run a Simple Python Cell
+
+What to do:
+In the first cell, type:
+print("Hello, Jupyter!")
+
+Then press Shift + Enter.
+
+Why it matters:
+Running a cell means Python executes your code and shows output below the cell.
+
+9) Rename Notebook
+
+What to do:
+Click the notebook title (usually Untitled) and rename it to:
+milestone_4_7_practice
+
+Why it matters:
+Meaningful names make files easier to find and review later.
+
+10) Save Notebook
+
+What to do:
+Press Ctrl + S (or File -> Save and Checkpoint).
+
+Why it matters:
+Saving stores your latest work to disk and creates a reliable restore point.
+
+11) Close Notebook Safely
+
+What to do:
+Inside notebook:
+File -> Close and Halt
+
+Back on Home page (if needed):
+Select notebook checkbox -> Shutdown
+
+Why it matters:
+Closing and halting stops the running kernel and frees memory/CPU resources.
+
+12) Reopen Notebook from Home
+
+What to do:
+From Jupyter Home, click:
+milestone_4_7_practice.ipynb
+
+Why it matters:
+This confirms your notebook was saved in the correct folder and can be resumed anytime.
+
+13) Stop Jupyter Server (When Done)
+
+What to do:
+In terminal, press Ctrl + C and confirm with y.
+
+Why it matters:
+Stops the local server cleanly and avoids leaving background processes running.
+
+Milestone 4.7 Outcome
+
+You can now:
+- Launch Jupyter Notebook from terminal
+- Understand the Jupyter Home interface
+- Navigate folders correctly
+- Create and run notebook cells
+- Rename, save, close, and reopen notebooks safely
