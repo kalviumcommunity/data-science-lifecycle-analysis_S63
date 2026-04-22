@@ -144,3 +144,53 @@ Output:
 
 >>> print("Hello")
 Hello
+
+
+Environment Verification (Milestone 4.6)
+Operating System
+
+Windows 11
+
+Python Verification
+
+Command:
+
+python --version
+
+Output:
+
+Python 3.12.4
+Conda Verification
+
+Command:
+
+conda --version
+
+Output:
+
+conda 23.x.x
+Environment Activation
+
+Command:
+
+conda activate base
+
+Output:
+
+(base) C:\Users\Dell>
+Jupyter Verification
+
+Command:
+
+jupyter notebook
+
+Result:
+
+Jupyter Notebook opened successfully in browser
+Created a new notebook
+Executed Python code successfully
+
+Example Output:
+
+print("Jupyter Working")
+Jupyter Working
