@@ -3774,3 +3774,141 @@ You confirmed:
 - You can verify selections by shape and return type.
 
 You are ready for filtering and analysis milestones built on these selections.
+
+
+Milestone 4.33: Detecting Missing Values in DataFrames
+
+Project Upgrade Target:
+- New script: `src/at_risk_missing_values_detection.py`
+- Read-only milestone focused entirely on locating, counting, and
+  understanding missing values - no cleaning yet.
+
+Step 1: Understand Missing Values
+
+What was confirmed:
+- A missing value (`NaN`) means the cell has no usable data.
+- For risk thresholds (marks < 50, attendance < 75) a missing value
+  cannot be safely evaluated.
+
+Why it matters in this project:
+- Missing data leads directly to unreliable risk classification.
+
+Step 2: Detect Missing Values
+
+What was implemented:
+- `show_missing_value_mask(df)` prints `df.isna()` to display a True/False
+  mask across the entire DataFrame.
+
+Why it matters in this project:
+- Boolean masks are the foundation for every downstream null-handling step.
+
+Step 3: Identify Columns with Missing Data
+
+What was implemented:
+- Column-wise counts via `df.isna().sum()`.
+- For `students.csv` (clean): all zeros.
+- For `students_unclean.csv`:
+  - `marks`: 1 missing
+  - `attendance`: 1 missing
+
+Why it matters in this project:
+- Pinpointing the affected columns guides the cleaning strategy.
+
+Step 4: Count Missing Values
+
+What was implemented:
+- `report_missing_per_column(df)` returns a small DataFrame with:
+  - `missing_count`
+  - `missing_percent`
+- For `students_unclean.csv`: `8.33%` missing per affected column.
+
+Why it matters in this project:
+- Severity (count + percent) determines whether to drop, fill, or escalate.
+
+Step 5: Inspect Problematic Rows
+
+What was implemented:
+- `show_problematic_rows(df)` returns rows where `df.isna().any(axis=1)`.
+- For `students_unclean.csv`:
+  - Row 2: Neha (marks NaN)
+  - Row 4: Isha (attendance NaN)
+
+Why it matters in this project:
+- Looking at the actual rows reveals whether nulls are random or systematic.
+
+Step 6: Visual Understanding
+
+What was implemented:
+- `describe_pattern(rows_with_missing)` reports:
+  - affected student names
+  - affected columns
+  - whether pattern looks scattered or isolated
+
+Why it matters in this project:
+- Patterns in missingness affect cleaning choices (drop vs impute, etc.).
+
+Step 7: Apply to Project Logic
+
+What was implemented:
+- `report_project_impact(df)` flags students whose `marks` or `attendance`
+  are missing and explicitly states:
+  - risk thresholds cannot be evaluated for those rows
+  - cleaning is required before classification
+
+Why it matters in this project:
+- Connects the diagnostic step directly to the project's risk decision logic.
+
+Step 8: Avoid Common Mistakes
+
+Common pitfalls flagged:
+- Ignoring `NaN` rows silently produces wrong results.
+- Comparing `NaN` to a number is always False - which can hide problems.
+
+Step 9: Real-World Scale
+
+Practical answer:
+- If 30% of rows had missing values, that would be a serious data-quality
+  problem requiring escalation rather than silent imputation.
+- The same detection routine works on small or massive datasets.
+
+Step 10: Prepare for Next Step
+
+What was confirmed:
+- Detection -> understand pattern -> only then apply a cleaning strategy.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What missing values are and why they appear in real data
+2. How `isna()` produces a boolean mask
+3. How to count missing values per column and as a percentage
+4. How to extract rows that contain at least one missing value
+5. Why detection must always come before cleaning in this project
+
+Implemented Script
+
+- `src/at_risk_missing_values_detection.py`
+
+Functions created:
+- `load_dataframe(...)` -> read-only loader
+- `show_missing_value_mask(...)` -> full True/False mask
+- `report_missing_per_column(...)` -> count and percent per column
+- `show_problematic_rows(...)` -> rows with at least one NaN
+- `describe_pattern(...)` -> human-readable pattern insight
+- `report_project_impact(...)` -> direct impact on risk classification
+- `run_missing_value_inspection(...)` -> per-dataset routine
+
+Sample observations:
+- `students.csv`         -> 0 missing cells, no impact
+- `students_unclean.csv` -> 2 missing cells (`marks`, `attendance`),
+  rows affected: Neha (row 2), Isha (row 4)
+
+Milestone 4.33 Outcome
+
+You confirmed:
+- Where missing values exist in the dataset and how many there are.
+- Which students and columns are affected.
+- Why missing values block correct risk classification.
+
+You are ready for the data cleaning milestone where these gaps are
+addressed with a deliberate strategy.
