@@ -4521,3 +4521,154 @@ You confirmed:
 - The statistics directly explain why specific students were flagged at-risk.
 
 You are ready for deeper analysis milestones (group-by, distributions, etc.).
+
+
+Milestone 4.38: Comparing Distributions Across Multiple Columns
+
+Project Upgrade Target:
+- New script: `src/at_risk_compare_distributions.py`
+- Input:      `data/processed/students_standardized.csv`
+
+This milestone is purely numerical comparison - no graphs.
+
+Step 1: Understand Concept
+
+What was confirmed:
+- A distribution describes how values spread across a column.
+- A single number (e.g. mean) cannot reveal shape, skew, or extremes.
+
+Why it matters in this project:
+- Risk decisions improve when we see the full shape, not just one summary.
+
+Step 2: Select Multiple Columns
+
+What was implemented:
+- Both numeric columns (`marks`, `attendance`) loaded and analyzed together.
+
+Step 3: Compare Mean Values
+
+What was implemented:
+- `report_mean_difference(df)` shows both means and their delta.
+
+Findings:
+- `marks` mean      : 67.92
+- `attendance` mean : 81.67
+- delta             : +13.75
+- Reading: attendance is higher than marks on average.
+
+Step 4: Compare Median Values
+
+Findings:
+- `marks` median: 68.50
+- `attendance` median: 83.00
+- Mean and median are close in both columns -> no severe central skew.
+
+Step 5: Compare Range (Spread)
+
+Findings:
+- `marks` range: 57.00
+- `attendance` range: 31.00
+- Reading: `marks` cover a much wider range than `attendance`.
+
+Step 6: Compare Variability
+
+Findings via `std`:
+- `marks` std: 19.30
+- `attendance` std: 10.59
+- Reading: `marks` vary more than `attendance` across the class.
+
+Step 7: Identify Patterns
+
+What was implemented:
+- `report_correlation(df)` -> Pearson correlation between `marks` and `attendance`.
+
+Findings:
+- Pearson correlation: 0.491 -> moderate positive.
+- Reading: students with lower marks tend to have lower attendance,
+  but the relationship is not strict.
+
+Step 8: Detect Anomalies
+
+What was implemented:
+- `detect_iqr_outliers(df)` flags values outside `[Q1 - 1.5*IQR, Q3 + 1.5*IQR]`.
+
+Findings:
+- `marks` outliers     : 0 (low<7.38, high>130.38)
+- `attendance` outliers: 0 (low<45.62, high>114.62)
+- Reading: no strict statistical outliers; values still warrant attention
+  through threshold-based risk rules.
+
+Bonus pattern check:
+- `show_low_low_overlap(df)` reports students in the bottom 25% of BOTH
+  `marks` and `attendance`.
+- Findings: 0 students in this run, indicating risk is split between
+  marks-driven and attendance-driven cases.
+
+Step 9: Apply to Project Logic
+
+What was implemented:
+- `add_risk_status(df)` runs the project's risk rule:
+  - `(marks < 50) | (attendance < 75)`
+
+Findings:
+- Final at-risk list aligns with the distribution comparison conclusions.
+- 7 at-risk students out of 12.
+
+Step 10: Avoid Common Mistakes
+
+Pitfalls flagged:
+- Comparing only means ignores spread and skew.
+- IQR outliers can be empty even when threshold-based risks exist.
+- Correlation alone does not prove causality.
+
+Step 11: Real-World Thinking
+
+Practical answer:
+- A class with stable marks but volatile attendance signals an
+  attendance-driven risk pattern.
+- A class with stable attendance but volatile marks signals a learning
+  outcome problem.
+- The current dataset shows wider marks variability and tighter
+  attendance, with a moderate positive link.
+
+Step 12: 2-Minute Video Preparation
+
+Explain:
+1. What "distribution" means and why it goes beyond a single average.
+2. How `marks` and `attendance` compare on mean, median, range, std, IQR.
+3. The Pearson correlation and what it implies about co-movement.
+4. The IQR-based outlier check and what zero outliers really indicates.
+5. How distribution comparison reinforces the project's at-risk decisions.
+
+Implemented Script
+
+- `src/at_risk_compare_distributions.py`
+
+Functions created:
+- `build_distribution_summary(df)` -> compact comparison table
+- `report_mean_difference(df)` -> mean delta + reading
+- `report_spread_comparison(df)` -> range + std contrast
+- `report_correlation(df)` -> Pearson correlation + interpretation
+- `show_low_low_overlap(df)` -> bottom-25% overlap across both columns
+- `detect_iqr_outliers(df)` -> IQR-based outlier flagging
+- `add_risk_status(df)` -> project risk rule
+- `print_risk_summary(df)` -> final readable report
+
+Key insights produced:
+- Attendance is 13.75 points higher than marks on average.
+- Marks vary almost twice as much as attendance.
+- Marks and attendance move together moderately (corr ~ 0.49).
+- No strict IQR outliers; risks are detected via project thresholds.
+- 7 of 12 students currently flagged at-risk.
+
+Milestone 4.38 Outcome
+
+You compared:
+- Marks and attendance distributions side-by-side using count, mean,
+  median, range, std, IQR, and correlation.
+
+You confirmed:
+- Distribution-level comparison strengthens the project's risk reasoning
+  and explains why specific students are flagged.
+
+You are ready for deeper EDA milestones built on these distribution insights.
