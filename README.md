@@ -4809,3 +4809,150 @@ You confirmed:
 - The project's risk rule is consistent with what the histograms show.
 
 You are ready for deeper EDA milestones that combine multiple visuals.
+
+
+Milestone 4.40: Visualizing Data Distributions Using Boxplots
+
+Project Upgrade Target:
+- New script: `src/at_risk_boxplots.py`
+- Inputs:     `data/processed/students_standardized.csv`
+- Outputs:
+  - `outputs/boxplot_marks.png`
+  - `outputs/boxplot_attendance.png`
+  - `outputs/boxplot_marks_vs_attendance.png`
+
+Step 1: Understand Boxplot
+
+What was confirmed:
+- A boxplot shows the median (Q2), the middle 50% (the box from Q1 to Q3),
+  the whiskers (typical range), and any outliers (points beyond whiskers).
+
+Why it matters in this project:
+- It compresses spread, central tendency, and outliers into one visual.
+
+Step 2: Create Boxplot for Marks
+
+What was implemented:
+- `plot_single_boxplot(...)` produces a vertical boxplot for `marks`
+  with a yellow median line and a red dashed threshold at 50.
+
+Findings on `marks`:
+- median = 68.50 (central performance is moderate-to-good).
+- Q1 = 53.50, Q3 = 84.25, IQR = 30.75 -> wide middle 50%.
+- min = 38.00 (sits visibly below the threshold line).
+
+Step 3: Interpret Spread
+
+Findings:
+- Marks IQR = 30.75 -> performance is not tightly grouped.
+- The bottom of the box sits close to the passing threshold (53.50 vs 50)
+  meaning a small drop can quickly push students into the failing band.
+
+Step 4: Detect Outliers
+
+Findings on `marks`:
+- IQR-based outliers = `[]` (no statistical outliers in this dataset).
+- However, 3 students sit below the project's passing threshold
+  (`marks < 50`). They are not statistical outliers but are still at-risk.
+
+Why it matters in this project:
+- Project rules can flag risk even when statistics do not.
+
+Step 5: Create Boxplot for Attendance
+
+What was implemented:
+- Vertical boxplot for `attendance` with a red dashed line at 75.
+
+Findings on `attendance`:
+- median = 83.00, Q1 = 71.50, Q3 = 88.75, IQR = 17.25.
+- min = 67.00 (sits below the 75% rule line).
+- IQR-based outliers = `[]` (no statistical outliers).
+
+Step 6: Compare Boxplots
+
+Findings using `report_spread_comparison(...)`:
+- `marks` IQR = 30.75 vs `attendance` IQR = 17.25.
+- Marks shows wider middle-50% spread -> less consistent performance,
+  while attendance is comparatively tighter.
+
+Step 7: Identify Patterns
+
+Findings on the dataset:
+- Lower-quartile membership lines up with at-risk students:
+  `Rohit, Vikram, Sara` (bottom-25% on marks),
+  `Neha, Priya, Arjun` (bottom-25% on attendance).
+- These match the at-risk list we already have from the threshold rule.
+
+Step 8: Apply to Project Logic
+
+What was implemented:
+- `add_risk_columns(df, marks_summary, attendance_summary)` extends the
+  rule. A student is at-risk if **any** of the following is true:
+  1. `marks < 50`
+  2. `attendance < 75`
+  3. `marks <= Q1_marks` (bottom-quartile on marks)
+  4. `attendance <= Q1_attendance` (bottom-quartile on attendance)
+  5. IQR-outlier on marks
+  6. IQR-outlier on attendance
+
+Why it matters in this project:
+- Adds a statistical safety net on top of fixed thresholds.
+
+Step 9: Avoid Mistakes
+
+Pitfalls flagged:
+- Removing outliers blindly destroys real at-risk signals.
+- Not every outlier is a data error; some are legitimate rare cases.
+- Forgetting that outliers are computed from the dataset; with only
+  12 rows, the whisker math is sensitive to small input changes.
+
+Step 10: Real-World Thinking
+
+Practical answer:
+- A high-marks + low-attendance student means the threshold rule still
+  flags them, but the deeper question is whether attendance will drag
+  marks down later. The combined boxplot evidence supports an early
+  intervention conversation.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What a boxplot shows: median, Q1, Q3, IQR, whiskers, outliers.
+2. The numbers from this project: marks IQR (30.75) vs attendance IQR (17.25).
+3. Why the threshold line on the boxplot connects visuals to project rules.
+4. How lower-quartile and IQR-outlier flags strengthen the at-risk rule.
+5. Why the at-risk list (7 students) stays consistent with previous milestones.
+
+Implemented Script
+
+- `src/at_risk_boxplots.py`
+
+Functions created:
+- `compute_box_summary(series, label)` -> five-number summary + IQR + whisker bounds
+- `print_box_summary(summary)` -> human-readable print
+- `plot_single_boxplot(...)` -> one column at a time with threshold line
+- `plot_side_by_side_boxplots(marks, attendance, output_path)` -> direct contrast
+- `report_spread_comparison(marks_summary, attendance_summary)` -> IQR-based spread reading
+- `add_risk_columns(...)` and `print_risk_table(...)` -> alignment with project rule
+
+Saved figures:
+- `outputs/boxplot_marks.png`
+- `outputs/boxplot_attendance.png`
+- `outputs/boxplot_marks_vs_attendance.png`
+
+Sample numbers:
+- Marks: min=38.00, Q1=53.50, median=68.50, Q3=84.25, max=95.00, IQR=30.75, outliers=[].
+- Attendance: min=67.00, Q1=71.50, median=83.00, Q3=88.75, max=98.00, IQR=17.25, outliers=[].
+
+Milestone 4.40 Outcome
+
+You produced:
+- Three boxplot artifacts saved into `outputs/`.
+
+You confirmed:
+- Marks spreads wider in the middle 50% than attendance.
+- No IQR outliers exist in this small dataset, but project thresholds
+  and lower-quartile membership keep the at-risk count stable at 7.
+- The boxplot view, the histogram view, and the threshold rule all agree.
+
+You are ready for deeper analysis combining boxplots with grouped views.
