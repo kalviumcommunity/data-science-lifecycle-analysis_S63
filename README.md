@@ -2833,3 +2833,139 @@ You proved:
 
 You confirmed readiness for:
 - Real data processing workflows where loop-free, scalable logic is required.
+
+
+Milestone 4.26: Understanding NumPy Broadcasting
+
+Project Upgrade Target:
+- New script: `src/at_risk_broadcasting.py`
+- Project now supports per-subject thresholds, per-subject weights, and
+  per-feature risk thresholds through broadcasting.
+
+Step 1: Scalar Broadcasting
+
+What was implemented:
+- `apply_grace_bonus_2d(subject_marks)` adds a scalar `2` to a `(5, 3)` matrix.
+
+Why it matters in this project:
+- A single scalar policy applies to every student and every subject in one line.
+
+Step 2: Threshold Array Introduction
+
+What was implemented:
+- `SUBJECT_PASSING_THRESHOLDS = np.array([45.0, 40.0, 50.0])` for `[Math, Sci, Eng]`.
+
+Why it matters in this project:
+- Real systems use different cutoffs per subject; a single scalar is not enough.
+
+Step 3: 1D Broadcasting Over a 2D Matrix
+
+What was implemented:
+- `subject_marks >= SUBJECT_PASSING_THRESHOLDS`
+- shapes: `(5, 3) >= (3,)` -> aligns on the last axis.
+
+Why it matters in this project:
+- One expression checks every student against every subject's threshold.
+
+Step 4: Move to 2D Data
+
+What was implemented:
+- `subject_marks` stored as a `(students, subjects)` matrix.
+- `weighted_overall_score(...)` multiplies by `SUBJECT_WEIGHTS` shape `(3,)`,
+  then sums across `axis=1` to produce one score per student.
+
+Why it matters in this project:
+- A weighted score is the foundation of more accurate risk detection.
+
+Step 5: Shape Alignment Rules
+
+Rule used in this milestone:
+- Compare shapes from the right.
+- A dimension of size `1` (or missing) expands to match.
+- Otherwise, sizes must be equal or it raises `ValueError`.
+
+Why it matters in this project:
+- Predictable shape rules prevent silent bugs in feature engineering.
+
+Step 6: Visualization Mental Model
+
+```
+subject_marks (5,3)        thresholds (3,)
+[[88 81 90]                 [45 40 50]
+ [44 60 55]
+ [70 38 78]      becomes -> [45 40 50]   stretched logically across 5 rows
+ [83 79 82]
+ [95 92 96]]
+```
+
+Why it matters in this project:
+- Visualizing the stretch makes broadcasting intuitive instead of magical.
+
+Step 7: Apply to Project Risk Logic
+
+What was implemented:
+- `build_feature_matrix(overall_score, attendance)` -> shape `(5, 2)`.
+- `detect_at_risk_broadcast(feature_matrix)`:
+  - compares `(5, 2)` to `(2,)` `FEATURE_THRESHOLDS`
+  - flags a student at risk if any feature is below threshold.
+
+Why it matters in this project:
+- Multi-feature thresholds become as easy to extend as adding a new entry to a 1D array.
+
+Step 8: Common Error Demonstrated
+
+What was implemented:
+- `shape_mismatch_demo()` triggers a real broadcasting error:
+  - `(5, 3)` against `(2,)` -> `ValueError`
+  - Caught and a clear fix message is printed.
+
+Why it matters in this project:
+- Engineers must recognize and recover from shape errors, not avoid them.
+
+Step 9: Replace Manual Per-Element Logic
+
+What was changed:
+- No manual reshaping or per-element loops are needed.
+- Broadcasting expresses the operation declaratively.
+
+Why it matters in this project:
+- Less code, fewer bugs, easier reviews.
+
+Step 10: Real-World Scale
+
+What was demonstrated:
+- Per-subject weights using `(3,)` array for `(N, 3)` data.
+- The same code works whether N is 5 or 5,000,000.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What broadcasting means in NumPy
+2. Why a `(5, 3)` matrix can be combined with a `(3,)` array directly
+3. How weights and thresholds are applied without copying data
+4. Why this removes loops in feature engineering
+5. How this improved the at-risk detection project (per-subject and per-feature rules)
+
+Implemented Script
+
+- `src/at_risk_broadcasting.py`
+
+Functions created:
+- `apply_grace_bonus_2d(...)` -> scalar -> 2D broadcast
+- `passes_per_subject(...)` -> `(5, 3)` vs `(3,)` comparison
+- `weighted_overall_score(...)` -> per-subject weighted sum
+- `build_feature_matrix(...)` -> stack score with attendance into `(5, 2)`
+- `detect_at_risk_broadcast(...)` -> `(5, 2)` vs `(2,)` threshold check
+- `shape_mismatch_demo()` -> demonstrates and recovers from a real broadcasting error
+
+Milestone 4.26 Outcome
+
+You upgraded:
+- Project logic to use broadcasting for per-subject thresholds, weights, and
+  multi-feature risk detection.
+
+You confirmed:
+- Same code scales naturally across more students or more features.
+- You can recognize and resolve shape-mismatch errors confidently.
+
+You are ready for advanced data operations on tabular datasets.
