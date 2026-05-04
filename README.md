@@ -5498,3 +5498,101 @@ Their meaning and impact on the project:
 
 You have completed full EDA on the project and are ready to move to
 deeper risk-modeling and decision-pipeline milestones.
+
+
+---
+
+
+# At-Risk Student Detection System - Project Summary
+
+This section is written for a non-technical reviewer. It covers the
+insights from the analysis, the assumptions we made, and the honest
+limitations of the work.
+
+
+## 📊 Project Insights
+
+- Low attendance and low marks tend to appear together, but it is a
+  *tendency*, not a strict rule.
+- A small group of students attends regularly and still scores below
+  the passing line. These are the most surprising at-risk cases and
+  are easy to miss if only attendance is checked.
+- A few students fall fast. The same student can move from
+  "passing" to "failing in both columns" within a few weeks, which
+  is why monitoring trends matters as much as monitoring averages.
+- Combining marks and attendance produces a stronger risk picture
+  than using either column on its own.
+- Sudden weekly drops (for example, a one-week marks fall of about 15
+  points) act as an early warning even when the latest score still
+  looks acceptable.
+- The class average can look healthy while several individual
+  students are at risk. Averages hide individual pain.
+- Histograms, boxplots, line plots, and scatter plots agree with each
+  other on which students need attention. The visual story and the
+  numerical rule both point to the same group.
+
+
+## ⚠️ Assumptions
+
+- Attendance percentage is a reasonable proxy for engagement in class.
+- Reported marks reflect actual academic performance.
+- The dataset (12 students; 60 weekly rows in the time-series view)
+  is treated as representative for teaching and demonstration.
+- Missing marks were filled using the column mean. We assume this
+  did not introduce material bias.
+- Duplicate rows were treated as data-entry errors and removed; we
+  assume there are no legitimate repeated entries we needed to keep.
+- Outliers were treated as meaningful student cases (struggling,
+  unusual, or critical), not as errors to be deleted.
+- The fixed thresholds (`marks < 50` and `attendance < 75%`) reflect
+  a standard institutional rule.
+- The `exam_week` column is assumed to be evenly spaced with no
+  missing weeks per student.
+
+
+## 🚧 Limitations
+
+- The dataset is small. Patterns observed here may not generalize to
+  larger or different schools.
+- Only two features were used: marks and attendance. Real-world risk
+  depends on more factors (health, family, socio-economic, learning
+  difficulties), which were not available.
+- No predictive model has been built. This project is an *analysis*,
+  not a classifier; it explains who is at risk *now* and *recently*,
+  but does not forecast.
+- IQR-based outlier detection is too loose on a 12-row dataset; the
+  whiskers are very wide, so the project relies on rule-based
+  categories instead.
+- Outlier interpretation is rule-based, not case-by-case. A real
+  deployment should investigate each flagged student individually.
+- The thresholds (50 marks, 75% attendance) are fixed. Different
+  institutions or grade levels may need different cutoffs.
+- The trend rule (`slope < -0.5 per week`) is a simple straight-line
+  fit. Non-linear patterns (e.g., one big dip then recovery) may not
+  be perfectly described by a single slope.
+- Class-average curves can mask individual decline. Interventions
+  must be at the student level, not at the class level.
+
+
+## 🎥 Video Preparation Notes
+
+Talking points for the closing video:
+
+1. The main insights, in plain English, with one example per point.
+2. Why the assumptions are stated openly. Assumptions are not wrong;
+   they are necessary boundaries that let the analysis be clear.
+3. The honest limitations: small data, two features, no prediction
+   model. State them confidently rather than hide them.
+4. Why honesty matters in data science: a model or analysis that
+   over-claims is more dangerous than one that openly states its
+   limits.
+
+
+## ✅ Final Checklist
+
+- The README explains the goal of the project (identify at-risk students).
+- Each milestone records what was done, why it matters, and the
+  artifact it produced.
+- Insights, assumptions, and limitations are written separately.
+- Outputs (plots and CSVs) are reproducible from the scripts in `src/`.
+- A non-technical reviewer can read this section without seeing any code.
