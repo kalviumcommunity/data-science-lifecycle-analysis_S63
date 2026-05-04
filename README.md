@@ -5137,3 +5137,164 @@ You confirmed:
 
 You are ready for deeper analysis (e.g., combining trends with
 groupings, scatter plots, and risk dashboards).
+
+
+Milestone 4.42: Exploring Relationships Between Variables Using Scatter Plots
+
+Project Upgrade Target:
+- New script: `src/at_risk_scatter.py`
+- Inputs:
+  - `data/processed/students_standardized.csv` (snapshot)
+  - `data/raw/students_timeseries.csv` (last-week aggregation)
+- Outputs:
+  - `outputs/scatter_marks_vs_attendance_snapshot.png`
+  - `outputs/scatter_marks_vs_attendance_last_week.png`
+
+Constraints honored:
+- No correlation coefficient.
+- No regression line.
+- Pure visual + threshold-quadrant reasoning.
+
+Step 1: Understand Scatter Plot
+
+What was confirmed:
+- Each point on the chart is **one student**.
+- X-axis = attendance (%). Y-axis = marks.
+
+Why it matters in this project:
+- Two project variables become spatial coordinates and any
+  relationship between them becomes visible at a glance.
+
+Step 2: Create Scatter Plot
+
+What was implemented:
+- `plot_scatter_with_quadrants(...)` plots all 12 students with:
+  - red dashed line at `marks=50`
+  - purple dashed line at `attendance=75`
+- Each point is annotated with the student's name.
+
+Step 3: Identify Relationship
+
+Findings (snapshot dataset):
+- Pattern-supportive points: 5/12 -> the cloud is **mixed**, not a
+  clean upward line.
+- Reading: there is no obvious global trend; we cannot say "more
+  attendance always means higher marks" from this chart alone.
+
+Step 4: Interpret Strength
+
+What was implemented:
+- `describe_visual_pattern(df)` reads the cloud purely visually
+  (no correlation math).
+
+Findings:
+- Snapshot: 5/12 supportive -> weak/mixed relationship.
+- Last-week of time-series: 7/12 supportive -> still mixed.
+
+Step 5: Identify Clusters
+
+Findings (snapshot dataset):
+- Top-right cluster (Safe): `Aisha, Karan, Isha, Aman, Dev` (5 students).
+- Lower bands appear along both axes -> students grouped by *which*
+  rule they violate.
+
+Step 6: Detect Outliers
+
+Findings (snapshot dataset):
+- "High attendance + low marks" outliers: `Vikram (38, 82)`,
+  `Sara (42, 88)` -> attendance is good, but marks are below the bar.
+- "High marks + low attendance": `Neha (72, 70)`, `Aman` is safe but
+  close, etc. The chart makes these mismatches obvious.
+
+Step 7: Apply to Project Logic
+
+What was implemented:
+- `classify_quadrant(row)` returns one of:
+  - `Safe` (marks >= 50 AND attendance >= 75)
+  - `Low marks only`
+  - `Low attendance only`
+  - `High risk (both low)`
+- `add_quadrant_column(df)` adds the label and an `at_risk` flag.
+
+Why it matters in this project:
+- The four quadrants give the project a **visual contract** that
+  matches the existing threshold rule. Anyone reading the plot can
+  see exactly why a student is flagged.
+
+Step 8: Avoid Common Mistakes
+
+Pitfalls flagged:
+- Correlation is not causation; even an upward cloud does not prove
+  attendance *causes* marks.
+- Outliers should be inspected, not deleted.
+- Boundary cases like `Meera (55, 75)` in the last-week view sit
+  exactly on the rule line and are classified as `Safe` because the
+  rule is `< 75`, not `<= 75`. Always make boundaries explicit.
+
+Step 9: Real-World Thinking
+
+Practical answer:
+- Pattern-breakers are common: a student can attend regularly yet
+  perform poorly (poor study habits, learning gap), or attend rarely
+  yet score high (talented but disengaged). Both groups still need
+  attention; the scatter plot is the place to find them.
+
+Step 10: Connect All Learnings
+
+How the visuals stack up:
+- Histograms (4.39) -> where the values cluster on each axis.
+- Boxplots (4.40) -> the spread and quartile bounds for each axis.
+- Line plots (4.41) -> direction over time per student.
+- Scatter plot (4.42) -> the joint relationship between both axes.
+- Together, they answer: who is at-risk, where, why, and is it
+  getting worse.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What a scatter plot shows and what each point represents.
+2. The two threshold lines and how they create the four quadrants.
+3. The cloud is mixed -> attendance alone is not a reliable predictor.
+4. Two interesting outlier types in this project:
+   - high attendance + low marks (Sara, Vikram)
+   - low attendance + decent marks (Neha, Priya, Arjun)
+5. The final at-risk list and how the scatter chart agrees with the
+   numerical rule.
+
+Implemented Script
+
+- `src/at_risk_scatter.py`
+
+Functions created:
+- `load_snapshot(csv_path)` -> reads standardized snapshot
+- `load_last_week_snapshot(csv_path)` -> takes the last week per student
+- `classify_quadrant(row)` and `add_quadrant_column(df)` -> 4-zone label
+- `plot_scatter_with_quadrants(df, ...)` -> color-coded scatter with annotations
+- `describe_visual_pattern(df)` -> visual-only relationship reading
+- `print_quadrant_breakdown(...)` and `print_risk_table(...)` -> reports
+
+Saved figures:
+- `outputs/scatter_marks_vs_attendance_snapshot.png`
+- `outputs/scatter_marks_vs_attendance_last_week.png`
+
+Sample numbers:
+- Snapshot: Safe=5, Low marks only=3, Low attendance only=4, High risk=0.
+- Last-week: Safe=6, Low marks only=2, Low attendance only=3, High risk=1
+  (`Rohit` is the only student in the both-low quadrant by week 5).
+
+Milestone 4.42 Outcome
+
+You produced:
+- Two scatter-plot artifacts that visually encode the project's
+  risk rule as four colored quadrants.
+
+You confirmed:
+- The relationship between marks and attendance in this project is
+  **mixed**, not strictly upward.
+- Pattern-breakers (high attendance + low marks, low attendance +
+  decent marks) are visible immediately and match the at-risk list.
+- Boundary cases (Meera at attendance=75) become explicit teaching
+  moments about how to read the rule.
+
+You are ready for deeper analysis combining all four visual tools
+into the final risk dashboard.
