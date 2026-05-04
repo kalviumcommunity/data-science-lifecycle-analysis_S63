@@ -4956,3 +4956,184 @@ You confirmed:
 - The boxplot view, the histogram view, and the threshold rule all agree.
 
 You are ready for deeper analysis combining boxplots with grouped views.
+
+
+Milestone 4.41: Identifying Trends Over Time Using Line Plots
+
+Project Upgrade Target:
+- New script:  `src/at_risk_trends.py`
+- New input:   `data/raw/students_timeseries.csv` (12 students x 5 weeks = 60 rows)
+- New output:  `data/processed/students_trend_summary.csv`
+- Plot output:
+  - `outputs/trend_marks_per_student.png`
+  - `outputs/trend_attendance_per_student.png`
+  - `outputs/trend_class_average.png`
+
+Step 1: Understand Time Data
+
+What was confirmed:
+- A trend needs an ordered time axis. The project added `exam_week`
+  (1-5) so each student has 5 sequential observations.
+
+Why it matters in this project:
+- Without time, the project can only ask "is this student at-risk now?".
+  With time, it can ask "is this student getting worse?".
+
+Step 2: Sort Data by Time
+
+What was implemented:
+- `load_timeseries(...)` always sorts by `(name, exam_week)` after read.
+
+Why it matters in this project:
+- Wrong order produces fake spikes and mis-leading slopes.
+
+Step 3: Create Line Plot for Marks
+
+What was implemented:
+- `plot_per_student_lines(value_column="marks", ...)` draws one line
+  per student with markers, plus a red dashed line at `marks=50`.
+
+Findings on `marks` trend:
+- Improving: Aisha, Isha, Dev, Meera, Aman.
+- Declining: Rohit, Sara, Priya, Neha, Vikram, Arjun.
+
+Step 4: Identify Trends
+
+What was implemented:
+- `compute_slope(values)` uses `np.polyfit` to fit a straight line
+  through each student's marks and returns the per-week slope.
+- A student is `marks_declining` if `slope < -0.5` per week.
+
+Findings (slope per week):
+- Sara=-4.5, Rohit=-4.3, Priya=-2.4, Arjun=-1.8, Neha=-1.3, Vikram=-1.0.
+- Improving: Meera=+2.6, Aisha=+1.2, Isha=+1.2, Dev=+0.7, Aman=+0.5.
+
+Step 5: Detect Sudden Changes
+
+What was implemented:
+- `detect_max_drop(values)` returns the largest week-on-week decrease.
+- A `marks_sudden_drop` flag fires when that drop is `<= -10` marks.
+
+Findings:
+- Priya shows a sharp `-15` drop (week 2 to week 3) -> classic risk signal.
+- Other students decline gradually rather than suddenly.
+
+Step 6: Create Line Plot for Attendance
+
+What was implemented:
+- A second per-student line plot for `attendance` with a red dashed
+  line at the project's 75% rule.
+
+Findings:
+- Strong declining attendance: Neha (-6.4/week), Arjun (-4.6/week),
+  Sara (-3.0/week), Rohit (-2.5/week).
+- Stable or improving: Aisha, Aman, Dev, Isha, Karan, Meera.
+
+Step 7: Compare Trends
+
+What was implemented:
+- `plot_class_average_lines(...)` puts class-average marks and
+  attendance on the same plot to read class-level direction.
+
+Findings on the class:
+- Class-level averages stay near safe ranges, but six students
+  pull below the rule lines individually -> class average can hide
+  individual risk.
+
+Step 8: Identify Risk Patterns
+
+Findings on the dataset:
+- Students that drop on **both** dimensions: Sara, Rohit, Arjun, Neha.
+- Students with declining marks but stable attendance: Priya, Vikram.
+- Both groups are flagged at-risk.
+
+Step 9: Apply to Project Logic
+
+What was implemented:
+- `apply_trend_risk(trend_df)` combines six checks:
+  1. `marks_slope < -0.5/week` (declining marks)
+  2. `attendance_slope < -0.5/week` (declining attendance)
+  3. `marks_max_weekly_drop <= -10` (sudden marks dip)
+  4. `attendance_max_weekly_drop <= -5` (sudden attendance dip)
+  5. `last_marks < 50` (current marks rule violated)
+  6. `last_attendance < 75` (current attendance rule violated)
+
+Why it matters in this project:
+- The project now flags students who are *currently* failing **and**
+  students who are *trending* toward failure.
+
+Step 10: Avoid Mistakes
+
+Pitfalls flagged:
+- Plotting unsorted data invents fake patterns.
+- Reacting to a single dip is unsafe; require slope or repeated drops.
+- Class-average curves can hide individual decline; always include
+  per-student curves.
+
+Step 11: Real-World Thinking
+
+Practical answer:
+- A student who drops then recovers (like Priya) shows up as both
+  a sudden-drop and a declining slope. The mentor should treat the
+  drop as a red flag even if the most recent week is acceptable,
+  because the student already proved they can fall.
+
+Step 12: 2-Minute Video Preparation
+
+Explain:
+1. What time-based data is and why ordering matters.
+2. The two line plots (per-student) and the class-average plot.
+3. The slope rule (-0.5/week) and the sudden-drop rule (-10 marks / -5%).
+4. Three insight bullets: declining-both group, declining-marks-only group,
+   and the class average masking individual risk.
+5. The final at-risk list and how it differs from the snapshot rule.
+
+Implemented Script
+
+- `src/at_risk_trends.py`
+
+Functions created:
+- `load_timeseries(csv_path)` -> always sorted, typed dataframe
+- `compute_slope(values)` -> per-week slope via `np.polyfit`
+- `detect_max_drop(values)` -> largest week-on-week decrease
+- `build_trend_summary(df)` -> per-student trend table
+- `plot_per_student_lines(...)` -> one panel for marks or attendance
+- `plot_class_average_lines(df, output_path)` -> class-level comparison
+- `apply_trend_risk(trend_df)` -> 6-rule risk flag
+- `print_trend_table(...)` and `print_risk_table(...)` -> readable output
+
+Saved figures:
+- `outputs/trend_marks_per_student.png`
+- `outputs/trend_attendance_per_student.png`
+- `outputs/trend_class_average.png`
+
+Saved trend summary:
+- `data/processed/students_trend_summary.csv`
+
+Sample numbers (slope per week):
+- Sara: marks=-4.5, attendance=-3.0  -> declining both
+- Rohit: marks=-4.3, attendance=-2.5 -> declining both
+- Priya: marks=-2.4, attendance=-0.5 -> sudden marks drop -15
+- Arjun: marks=-1.8, attendance=-4.6 -> declining both
+- Neha:  marks=-1.3, attendance=-6.4 -> declining both
+- Vikram: marks=-1.0, attendance=+0.4 -> declining marks
+- Aisha, Aman, Dev, Isha, Karan, Meera -> stable or improving
+
+Final at-risk list (6 students by trend rule):
+`Arjun, Neha, Priya, Rohit, Sara, Vikram`
+
+Milestone 4.41 Outcome
+
+You produced:
+- A time-series dataset with 60 ordered rows (12 students x 5 weeks).
+- Three line-plot artifacts in `outputs/`.
+- A `students_trend_summary.csv` file capturing slopes, drops, and flags.
+
+You confirmed:
+- Trends reveal *direction*, not just current value.
+- Six students show declining behavior; four of them decline on both
+  marks and attendance simultaneously (highest risk segment).
+- Class average alone is misleading; per-student curves are essential.
+
+You are ready for deeper analysis (e.g., combining trends with
+groupings, scatter plots, and risk dashboards).
