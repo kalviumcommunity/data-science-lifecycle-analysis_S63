@@ -2576,3 +2576,123 @@ You learned:
 - How to apply indexing to real project logic
 
 You are ready to scale this project into multi-feature data science workflows.
+
+
+Milestone 4.24: Performing Basic Mathematical Operations on NumPy Arrays
+
+Project Upgrade Target:
+- New script: `src/at_risk_numpy_math_ops.py`
+- All numeric calculations now run as vectorized NumPy operations.
+
+Step 1: Element-Wise Operations
+
+What was implemented:
+- `apply_grace_bonus(marks)` -> `marks + GRACE_BONUS_POINTS`
+- `apply_late_penalty(marks)` -> `marks - LATE_PENALTY_POINTS`
+
+Why it matters in this project:
+- Policy adjustments now apply to all students at once, with zero loops.
+
+Step 2: Array-to-Array Operations
+
+What was implemented:
+- `compute_overall_score(marks, attendance)` -> `(marks * 0.7) + (attendance * 0.3)`.
+
+Why it matters in this project:
+- Combines two student features into a single weighted score for ranking and reporting.
+
+Step 3: Scalar Operations
+
+What was implemented:
+- `normalize_attendance(attendance)` -> `attendance * 1.05`, capped at 100 via `np.minimum(...)`.
+
+Why it matters in this project:
+- Scales the entire attendance dataset uniformly for normalization scenarios.
+
+Step 4: Replace Loop Logic
+
+What was changed:
+- Class metrics computed via `np.mean`, `np.max`, `np.min`, `np.std`.
+- Per-student decisions computed via vectorized comparisons.
+
+Why it matters in this project:
+- Removes manual loops; the math expresses the intent directly.
+
+Step 5: Comparison Operations
+
+What was implemented:
+- `marks < PASSING_MARKS_THRESHOLD`
+- `attendance < MIN_ATTENDANCE_PERCENTAGE`
+
+Why it matters in this project:
+- These produce boolean arrays which become at-risk masks.
+
+Step 6: Combine Conditions
+
+What was implemented:
+- `low_marks | low_attendance` to produce the final at-risk mask.
+
+Why it matters in this project:
+- Bulk risk detection using a single expression instead of nested if-checks.
+
+Step 7: List vs Array Behavior
+
+What was demonstrated:
+- `list + list` -> concatenation
+- `list * 2` -> repetition
+- `array + array` -> element-wise sum
+- `array * 2` -> element-wise scaling
+
+Why it matters in this project:
+- Confirms why arrays are mandatory for any numeric data work.
+
+Step 8: Prevent Shape Mistakes
+
+What was implemented:
+- `ensure_same_shape(array_a, array_b)` raises `ValueError` on mismatch.
+
+Why it matters in this project:
+- Catches integration bugs early when combining feature arrays.
+
+Step 9: Apply to Project Logic
+
+What was integrated:
+- Loop-free class summary
+- Vectorized at-risk detection (boolean mask)
+- `np.sum(mask)` to count at-risk students in one expression
+
+Why it matters in this project:
+- This is how production-grade data science systems compute decisions.
+
+Step 10: 2-Minute Video Preparation
+
+Explain:
+1. What element-wise operations are
+2. How list math differs from array math
+3. How scalar operations apply to the whole dataset
+4. How loops were replaced with vectorized expressions
+5. How this upgrade improves the at-risk detection project
+
+Implemented Script
+
+- `src/at_risk_numpy_math_ops.py`
+
+Functions created:
+- `apply_grace_bonus(...)`, `apply_late_penalty(...)` -> scalar adjustments
+- `normalize_attendance(...)` -> scaled and clipped attendance
+- `compute_overall_score(...)` -> element-wise weighted combination
+- `class_summary(...)` -> aggregate metrics without loops
+- `detect_at_risk_vectorized(...)` -> boolean-mask risk detection
+- `ensure_same_shape(...)` -> defensive shape validation
+- `list_vs_array_math()` -> behavior contrast demo
+
+Milestone 4.24 Outcome
+
+You upgraded:
+- All project calculations from loop-based logic to vectorized NumPy math.
+
+You learned:
+- Element-wise, scalar, and combined-array operations
+- How to replace loops with concise NumPy expressions
+- How to defend against shape mismatches
+- Why vectorization is the foundation of efficient data science workflows
