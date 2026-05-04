@@ -2696,3 +2696,140 @@ You learned:
 - How to replace loops with concise NumPy expressions
 - How to defend against shape mismatches
 - Why vectorization is the foundation of efficient data science workflows
+
+
+Milestone 4.25: Applying Vectorized Operations Instead of Python Loops
+
+Project Upgrade Target:
+- New script: `src/at_risk_vectorized_pipeline.py`
+- Loop-based risk detection is replaced with one vectorized expression,
+  and the speed gain is proven with a benchmark.
+
+Step 1: Identify Loop-Based Code
+
+What was identified:
+- The project previously iterated through students with a `for` loop and
+  per-student `if` checks for marks and attendance.
+
+Why it matters in this project:
+- Each loop iteration adds Python overhead, which becomes painful at scale.
+
+Step 2: Loop-Based Example
+
+What was implemented:
+- `detect_at_risk_loop(marks, attendance)` keeps the traditional version for comparison.
+- It iterates index by index and appends boolean flags.
+
+Why it matters in this project:
+- Having both versions side by side makes the upgrade concrete and reviewable.
+
+Step 3: Convert to Vectorized Operation
+
+What was implemented:
+- `detect_at_risk_vectorized(marks, attendance)` returns:
+  - `(marks < 50) | (attendance < 75)`
+- A single line replaces the entire loop.
+
+Why it matters in this project:
+- NumPy applies the comparison to all students simultaneously.
+
+Step 4: Boolean Array Understanding
+
+What was demonstrated:
+- `marks < 50` -> boolean array
+- `attendance < 75` -> boolean array
+- combined mask -> True for at-risk, False for safe
+
+Why it matters in this project:
+- Boolean masks are the building blocks of filtering, counting, and selection.
+
+Step 5: Combine Conditions
+
+What was implemented:
+- `(low_marks) | (low_attendance)` to express the bulk decision rule.
+
+Why it matters in this project:
+- Vectorized logical ops let one expression handle complex multi-condition rules.
+
+Step 6: Remove Loops Completely
+
+What was changed:
+- Main pipeline calls only the vectorized version.
+- The loop variant is preserved for benchmarking.
+
+Why it matters in this project:
+- Cleaner code, fewer bugs, faster execution.
+
+Step 7: Compare Code
+
+Loop version:
+- explicit `for index in range(len(marks))`
+- per-element conditions and `append`
+
+Vectorized version:
+- one expression
+- shorter, clearer, idiomatic NumPy
+
+Step 8: Apply to Project
+
+What was integrated:
+- Vectorized risk mask drives the main report.
+- `np.sum(mask)` provides at-risk count in one call.
+
+Why it matters in this project:
+- This is the core working pattern of real data science systems.
+
+Step 9: Avoid Mistakes
+
+What was implemented:
+- `ensure_same_shape(...)` raises `ValueError` on shape mismatch before vectorized math.
+
+Why it matters in this project:
+- Catches integration mistakes before they cause silent wrong results.
+
+Step 10: Real-World Scale (Benchmark)
+
+What was implemented:
+- `benchmark_loop_vs_vectorized(BENCHMARK_STUDENT_COUNT)` tests 100,000 students.
+- Confirms output equality, then measures both runtimes.
+
+Sample run on this machine:
+- Dataset size       : 100,000 students
+- Loop runtime       : ~0.032 sec
+- Vectorized runtime : ~0.002 sec
+- Speedup factor     : ~18x
+
+Why it matters in this project:
+- Demonstrates measurable efficiency gain at realistic scale.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What vectorization is and how it differs from looping
+2. Why per-element loops slow down with large datasets
+3. How the boolean mask approach replaces if-conditions in loops
+4. How `np.sum(mask)` counts at-risk students directly
+5. The benchmark numbers and what they prove
+
+Implemented Script
+
+- `src/at_risk_vectorized_pipeline.py`
+
+Functions created:
+- `detect_at_risk_loop(...)` -> traditional Python loop version
+- `detect_at_risk_vectorized(...)` -> one-line vectorized version
+- `ensure_same_shape(...)` -> defensive validator
+- `print_boolean_array_demo(...)` -> shows masks for marks, attendance, combined
+- `benchmark_loop_vs_vectorized(...)` -> generates 100k records and times both
+- `print_risk_table(...)`, `print_benchmark(...)` -> structured reporting
+
+Milestone 4.25 Outcome
+
+You upgraded:
+- The project's risk detection from loops to a single vectorized expression.
+
+You proved:
+- Vectorization is roughly an order of magnitude faster on a 100k record set.
+
+You confirmed readiness for:
+- Real data processing workflows where loop-free, scalable logic is required.
