@@ -2328,3 +2328,125 @@ You implemented:
 You achieved:
 - Scalable, maintainable structure with clear separation of concerns.
 - Same observable behavior, validated by a successful run after refactor.
+
+
+Milestone 4.22: Creating NumPy Arrays from Python Lists
+
+Project Upgrade Target:
+- New script: `src/at_risk_numpy_arrays.py`
+- Existing project numeric data (marks, attendance) is now array-powered.
+
+Step 1: Identify Numeric Data
+
+What was identified:
+- `marks` and `attendance` were the numeric fields stored as Python lists.
+
+Why it matters in this project:
+- Numeric fields drive every risk decision; making them efficient affects everything downstream.
+
+Step 2: Import NumPy
+
+What was added:
+- `import numpy as np`
+
+Why it matters in this project:
+- NumPy is the foundation of numerical computing for data science workloads.
+
+Step 3: Convert Lists to Arrays
+
+What was done:
+- `np.array(student_data["marks"], dtype=float)`
+- `np.array(student_data["attendance"], dtype=float)`
+
+Why it matters in this project:
+- Arrays are faster, smaller in memory, and support vectorized math.
+
+Step 4: Inspect Array Properties
+
+What was inspected:
+- `shape` and `dtype` of each array via `inspect_arrays()`.
+
+Why it matters in this project:
+- Confirms data structure before computation; prevents silent type bugs.
+
+Step 5: Perform Array Operations
+
+What was implemented:
+- `np.mean(...)`, `np.max(...)`, `np.min(...)` for class metrics.
+- Vectorized comparison `(marks < 50) | (attendance < 75)` for at-risk detection.
+
+Why it matters in this project:
+- Replaces manual loops with one expressive line, reducing bugs.
+
+Step 6: List vs Array Behavior Comparison
+
+What was demonstrated:
+- `list + list` -> concatenation
+- `array + array` -> element-wise sum
+- `array * 2` -> scaling
+- `array > 15` -> boolean mask
+
+Why it matters in this project:
+- Clarifies why arrays are mandatory for numeric analysis pipelines.
+
+Step 7: Project Integration
+
+What was integrated:
+- Class metrics now computed from arrays.
+- At-risk identification is now a single vectorized expression returning a boolean mask.
+
+Why it matters in this project:
+- Logic becomes simpler and faster at the same time.
+
+Step 8: Real-World Scale Thinking
+
+Practical answer:
+- The same vectorized code handles 5 students or 10,000+ students with no rewrite.
+- NumPy uses optimized C-level computation under the hood.
+
+Step 9: Clean Output
+
+What was added:
+- Sectioned, aligned report:
+  - array inspection
+  - class metrics
+  - per-student at-risk table with totals
+  - list-vs-array demo
+
+Why it matters in this project:
+- Readable output is essential for stakeholders interpreting results.
+
+Step 10: 2-Minute Video Preparation
+
+Explain:
+1. What a NumPy array is and how it differs from a Python list
+2. Why arrays are used in data science (speed, vectorization, memory)
+3. How marks and attendance lists were converted to arrays
+4. Which operations were applied (mean, comparisons, boolean mask)
+5. How this upgrade improved the at-risk detection project
+
+Implemented Script
+
+- `src/at_risk_numpy_arrays.py`
+
+Functions created:
+- `load_student_data()` -> raw lists from project
+- `convert_to_arrays(...)` -> NumPy conversion
+- `inspect_arrays(...)` -> shape and dtype check
+- `compute_class_metrics(...)` -> mean, max, min via NumPy
+- `detect_at_risk(...)` -> vectorized boolean mask
+- `print_class_metrics(...)` and `print_risk_report(...)` -> structured output
+- `list_vs_array_demo()` -> conceptual contrast
+
+Milestone 4.22 Outcome
+
+You upgraded:
+- The project's numeric layer from Python lists to NumPy arrays.
+
+You learned:
+- How to convert lists into arrays
+- How to inspect array shape and dtype
+- How vectorized math replaces manual loops
+- Why arrays scale to large datasets effortlessly
+
+You are ready for the next data science step.
