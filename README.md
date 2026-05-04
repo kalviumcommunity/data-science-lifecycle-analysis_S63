@@ -3222,3 +3222,143 @@ You confirmed:
 
 You are ready for the next milestone where this DataFrame becomes the
 foundation of filtering, grouping, and analysis steps.
+
+
+Milestone 4.29: Loading CSV Data into Pandas DataFrames
+
+Project Upgrade Target:
+- New script: `src/at_risk_csv_loader.py`
+- Updated dataset: `data/raw/students.csv` now contains 12 student records.
+- The project now runs through a true file-driven CSV loading pipeline
+  with path validation, schema checks, and data-quality detection.
+
+Step 1: Understand CSV Structure
+
+What was confirmed:
+- The dataset is plain text with comma-separated rows and columns:
+  - `name, marks, attendance`
+
+Why it matters in this project:
+- CSV is the most common entry point for tabular data in real systems.
+
+Step 2: Create CSV File
+
+What was implemented:
+- Expanded `data/raw/students.csv` to 12 students for richer testing.
+
+Why it matters in this project:
+- A larger file demonstrates how the same code handles realistic dataset sizes.
+
+Step 3: Load CSV into Pandas
+
+What was implemented:
+- `load_csv_to_dataframe(csv_path)` -> uses `pd.read_csv(...)`.
+- Returns a DataFrame ready for analysis.
+
+Why it matters in this project:
+- One function call replaces all manual data definition.
+
+Step 4: Check File Path
+
+What was implemented:
+- `validate_csv_path(csv_path)`:
+  - raises `FileNotFoundError` if missing
+  - raises `ValueError` if file is empty
+- Path resolved using `Path(__file__).resolve().parents[1]` so the script
+  works from any current working directory.
+
+Why it matters in this project:
+- Wrong paths are the #1 cause of "it works on my machine" failures.
+
+Step 5: Inspect Loaded Data
+
+What was implemented:
+- `inspect_loaded_data(df)` prints `head`, `tail`, `shape`, `columns`,
+  `dtypes`, and `isnull().sum()`.
+
+Why it matters in this project:
+- Confirms the file loaded as expected before any computation.
+
+Step 6: Check Structure
+
+What was confirmed:
+- Shape: `(12, 3)` -> rows = students, columns = features.
+- Columns match expected: `name`, `marks`, `attendance`.
+
+Why it matters in this project:
+- Ensures the contract between dataset and project logic is intact.
+
+Step 7: Detect Common Issues
+
+What was implemented:
+- `validate_schema(df)` -> raises `ValueError` listing missing required columns.
+- `detect_common_issues(df)` flags:
+  - empty DataFrame
+  - duplicate student names
+  - non-numeric `marks` or `attendance`
+  - values outside the `0..100` range
+
+Why it matters in this project:
+- Catches integration problems early before they corrupt analysis.
+
+Step 8: Replace Hardcoded Data
+
+What was changed:
+- Project no longer relies on hardcoded dictionaries or arrays.
+- The CSV is the single source of truth.
+
+Why it matters in this project:
+- Source-of-truth datasets unlock realistic workflows and version control.
+
+Step 9: Apply Project Logic
+
+What was implemented:
+- `add_risk_status_column(df)` adds an `at_risk` boolean column using:
+  - `(df['marks'] < 50) | (df['attendance'] < 75)`
+- `print_clean_report(df)` prints the full table and a summary listing
+  every at-risk student by name.
+
+Why it matters in this project:
+- Risk detection now operates on live file data, not hand-coded fixtures.
+
+Step 10: Real-World Scale
+
+Practical answer:
+- If `students.csv` is updated tomorrow, simply re-running the script
+  produces the new report. No code change is needed.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What a CSV file is and why it is used everywhere
+2. How `data/raw/students.csv` was created and structured
+3. How `pd.read_csv(...)` loaded it into a DataFrame
+4. How `head`, `tail`, `shape`, `columns`, and `dtypes` were used to verify it
+5. How replacing hardcoded data made the project file-driven and scalable
+
+Implemented Script
+
+- `src/at_risk_csv_loader.py`
+
+Functions created:
+- `validate_csv_path(...)` -> path and emptiness checks
+- `load_csv_to_dataframe(...)` -> safe `pd.read_csv` wrapper
+- `validate_schema(...)` -> required column enforcement
+- `inspect_loaded_data(...)` -> head, tail, shape, columns, dtypes, nulls
+- `detect_common_issues(...)` -> data quality checks
+- `add_risk_status_column(...)` -> vectorized boolean column on file data
+- `print_clean_report(...)` -> file-driven readable output
+
+Sample run on the loaded `data/raw/students.csv`:
+- Shape       : `(12, 3)`
+- At-risk count: 7
+- At-risk names: `['Rohit', 'Neha', 'Vikram', 'Priya', 'Sara', 'Meera', 'Arjun']`
+
+Milestone 4.29 Outcome
+
+You upgraded:
+- The data ingestion layer to a real CSV loading pipeline with validation.
+
+You confirmed:
+- The project is now file-driven, validated, and ready for data cleaning
+  and analysis in the next milestones.
