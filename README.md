@@ -3636,3 +3636,141 @@ You confirmed:
 
 You are ready for the data cleaning milestones where missing values and
 type problems are corrected.
+
+
+Milestone 4.32: Selecting Rows and Columns Using Indexing and Slicing
+
+Project Upgrade Target:
+- New script: `src/at_risk_indexing_slicing.py`
+- Read-only milestone focused on extracting precise subsets from the
+  student dataset for risk detection.
+
+Step 1: Select Columns
+
+What was implemented:
+- `df["marks"]` -> single column as a Series.
+- `df[["marks", "attendance"]]` -> two columns as a smaller DataFrame.
+
+Why it matters in this project:
+- Risk detection only needs the numeric features. Selecting them keeps the
+  pipeline focused and reduces noise.
+
+Step 2: Select Multiple Columns
+
+What was confirmed:
+- Selecting `[["marks", "attendance"]]` returns a DataFrame, while a
+  single-column selection returns a Series.
+
+Why it matters in this project:
+- Knowing the return type prevents subtle bugs in downstream steps.
+
+Step 3: Select Rows by Position (iloc)
+
+What was demonstrated:
+- `df.iloc[0]` -> first student row.
+- `df.iloc[:3]` -> first three students.
+- `df.iloc[2:6]` -> middle slice.
+
+Why it matters in this project:
+- Quick positional slicing for sampling or partial processing.
+
+Step 4: Select Rows by Label (loc)
+
+What was demonstrated:
+- After `df.set_index("name")`:
+  - `df_by_name.loc["Aisha"]` -> one student.
+  - `df_by_name.loc[["Rohit", "Neha", "Karan"]]` -> a labeled subset.
+
+Why it matters in this project:
+- Label-based access is far more meaningful than positional indexes.
+
+Step 5: Slice Data
+
+What was demonstrated:
+- `df.iloc[2:6]` -> positional slice.
+- `df.loc[2:5, ["marks", "attendance"]]` -> labeled slice with column subset.
+
+Why it matters in this project:
+- Slicing supports batch processing and partial reports.
+
+Step 6: Combine Row + Column Selection
+
+What was demonstrated:
+- `df.iloc[:5][["marks", "attendance"]]` -> first 5 students, two features.
+- `df_by_name.loc[["Vikram", "Sara"], "marks"]` -> specific students,
+  one feature.
+
+Why it matters in this project:
+- Real workflows always slice both axes simultaneously.
+
+Step 7: Verify Selection
+
+What was implemented:
+- `verify_selections(df)` checks:
+  - selection shape matches expectation
+  - return type is what the next step assumes
+
+Why it matters in this project:
+- Verifying selections early prevents silent wrong-result bugs.
+
+Step 8: Common Mistakes
+
+What was demonstrated:
+- Wrong column name (case-sensitive) -> `KeyError: 'Marks'`.
+- Out-of-range positional index -> `IndexError`.
+
+Why it matters in this project:
+- These are the two most common selection mistakes in real codebases.
+
+Step 9: Apply to Project Logic
+
+What was implemented:
+- `select_features_for_risk_input(df)` returns only:
+  - `name`, `marks`, `attendance`
+- This is the exact input shape downstream risk detection needs.
+
+Why it matters in this project:
+- Defines a clean contract between selection and the next analysis step.
+
+Step 10: Real-World Scale
+
+Practical answer:
+- For very large datasets, selecting only relevant columns and row ranges
+  drastically reduces memory and processing time.
+- Indexing patterns shown here scale to millions of rows without changes.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. How to select a column with `df["marks"]`
+2. How to select rows by position with `df.iloc`
+3. How to select rows by label with `df.loc` after `set_index("name")`
+4. How to combine row and column selection in one expression
+5. Why correct selection is the foundation of accurate analysis
+
+Implemented Script
+
+- `src/at_risk_indexing_slicing.py`
+
+Functions created:
+- `load_dataframe(...)` -> read-only loader
+- `show_column_selection(...)` -> single and multi-column selection
+- `show_row_selection_by_position(...)` -> `iloc` examples
+- `show_row_selection_by_label(...)` -> `loc` examples after `set_index`
+- `show_combined_selection(...)` -> row + column combinations
+- `verify_selections(...)` -> shape and type checks
+- `common_mistakes_demo(...)` -> typical KeyError/IndexError cases
+- `select_features_for_risk_input(...)` -> project-ready selection
+
+Sample observations:
+- First-5 selection shape: `(5, 2)` for `[marks, attendance]`
+- Project-ready selection shape: `(12, 3)` for `[name, marks, attendance]`
+
+Milestone 4.32 Outcome
+
+You confirmed:
+- You can select columns, rows, and slices using both `iloc` and `loc`.
+- You can combine row and column selection in one expression.
+- You can verify selections by shape and return type.
+
+You are ready for filtering and analysis milestones built on these selections.
