@@ -4672,3 +4672,140 @@ You confirmed:
   and explains why specific students are flagged.
 
 You are ready for deeper EDA milestones built on these distribution insights.
+
+
+Milestone 4.39: Visualizing Data Distributions Using Histograms
+
+Project Upgrade Target:
+- New script: `src/at_risk_histograms.py`
+- Inputs:     `data/processed/students_standardized.csv`
+- Outputs:
+  - `outputs/histogram_marks.png`
+  - `outputs/histogram_attendance.png`
+  - `outputs/histogram_marks_vs_attendance.png`
+
+Step 1: Understand Histogram
+
+What was confirmed:
+- A histogram counts how many values fall into each bin range.
+- It reveals shape, peak, spread, and skew at a glance.
+
+Why it matters in this project:
+- Histograms make patterns visible faster than tables alone.
+
+Step 2: Create Histogram for Marks
+
+What was implemented:
+- `plot_single_histogram(...)` plots `marks` with bins of width 10
+  (`[0, 10, 20, ..., 100]`) and a red dashed threshold line at 50.
+
+Why it matters in this project:
+- The threshold line makes the project rule visually obvious.
+
+Step 3: Interpret Shape
+
+Findings on `marks`:
+- Most students sit in the `60-90` range.
+- A small but real cluster sits in the `30-50` zone (failing band).
+
+Step 4: Detect Skewness
+
+Findings:
+- `marks` mean = 67.92, median = 68.50 -> balanced (mean ~ median).
+- `attendance` mean = 81.67, median = 83.00 -> left-skewed
+  (mean < median), suggesting low-end outliers.
+
+Step 5: Identify Outliers
+
+Findings via bin frequencies:
+- `marks` low-bin counts: `30-40 (1)`, `40-50 (2)` -> 3 students under threshold.
+- These align directly with the at-risk list.
+
+Step 6: Create Histogram for Attendance
+
+What was implemented:
+- Second histogram for `attendance` with a red dashed line at 75.
+
+Findings:
+- Most students cluster in `80-100` (high attendance).
+- A clear lower cluster exists in `60-75` -> 3 students below the rule.
+
+Step 7: Compare Both Histograms
+
+What was implemented:
+- `plot_side_by_side_histograms(...)` produces a single figure with two
+  panels for direct visual contrast.
+- Reading from frequencies:
+  - `marks` distribution is more spread out (range 57).
+  - `attendance` is tighter (range 31) but with a low-end tail.
+
+Step 8: Identify Patterns
+
+Findings on the project dataset:
+- 3 students fall below the marks threshold.
+- 4 students fall below the attendance threshold.
+- The unioned at-risk set is 7 students (`marks < 50 OR attendance < 75`).
+
+Step 9: Apply to Project Logic
+
+What was implemented:
+- `add_risk_status(df)` applies the project's threshold rule on the
+  same data used for the histograms.
+
+Why it matters in this project:
+- The histograms and the at-risk decisions stay visually consistent.
+
+Step 10: Avoid Mistakes
+
+Pitfalls flagged:
+- Mistaking a histogram for a bar chart (categories vs ranges).
+- Overinterpreting tiny differences across adjacent bins.
+- Choosing too few/many bins; here a 10-unit bin width fits the 0-100 scale.
+
+Step 11: Real-World Thinking
+
+Practical answer:
+- An uneven distribution is normal in real classrooms.
+- A heavy left tail in `attendance` should always trigger an
+  intervention conversation, even when overall mean looks acceptable.
+
+Step 12: 2-Minute Video Preparation
+
+Explain:
+1. What a histogram is and how it differs from a bar chart.
+2. Why bin width matters (here, 10-unit bins for 0-100 scale).
+3. The threshold line and how it links the visual to the at-risk rule.
+4. The shape readings: balanced marks vs left-skewed attendance.
+5. How the visual evidence agrees with the project's at-risk list.
+
+Implemented Script
+
+- `src/at_risk_histograms.py`
+
+Functions created:
+- `report_bin_frequencies(series, label)` -> textual companion to histograms
+- `plot_single_histogram(series, ..., output_path)` -> one column at a time
+- `plot_side_by_side_histograms(marks, attendance, output_path)` -> direct contrast
+- `describe_shape(series, label)` -> mean vs median skew reading
+- `report_visual_insights(df)` -> consolidated reading
+- `add_risk_status(df)` and `print_risk_summary(df)` -> alignment with project rule
+
+Saved figures:
+- `outputs/histogram_marks.png`
+- `outputs/histogram_attendance.png`
+- `outputs/histogram_marks_vs_attendance.png`
+
+Sample bin frequencies:
+- `marks`: `30-40 (1)`, `40-50 (2)`, `60-70 (2)`, `80-90 (3)`, `90-100 (1)`.
+- `attendance`: `60-70 (3)`, `70-80 (2)`, `80-90 (4)`, `90-100 (3)`.
+
+Milestone 4.39 Outcome
+
+You produced:
+- Three histogram artifacts saved into `outputs/` for reporting and review.
+
+You confirmed:
+- The visual distribution agrees with the numerical analysis from previous milestones.
+- The project's risk rule is consistent with what the histograms show.
+
+You are ready for deeper EDA milestones that combine multiple visuals.
