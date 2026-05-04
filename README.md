@@ -4207,3 +4207,163 @@ You implemented:
 You confirmed:
 - 3 duplicate rows removed in this run; final dataset has 12 unique students.
 - Risk classification on deduplicated data is reliable and trustworthy.
+
+
+Milestone 4.36: Standardizing Column Names and Data Formats
+
+Project Upgrade Target:
+- New input dataset: `data/raw/students_messy.csv`
+- New script:        `src/at_risk_standardize_columns.py`
+- New artifact:      `data/processed/students_standardized.csv`
+
+The messy input intentionally includes:
+- Mixed-case column headers with whitespace and `%`:
+  - `Student Name `, ` Marks `, ` Attendance %`
+- Inconsistent name formatting:
+  - `  Aisha`, `ROHIT `, `neha`, `ISHA  `, `arjun `
+- Numeric attendance with `%` symbols (read as text by pandas):
+  - `91%`, `79%`, `70%`, ...
+
+Step 1: Identify Problems
+
+What was inspected:
+- Raw column dtypes:
+  - `Student Name` (`str`)
+  - ` Marks ` (`int64`)
+  - ` Attendance %` (`str` because of `%` symbol)
+- Names contain leading/trailing spaces and inconsistent capitalization.
+
+Why it matters in this project:
+- Inconsistent headers and formats break code, comparisons, and joins.
+
+Step 2: Standardize Column Names
+
+What was implemented:
+- `to_snake_case(column_name)` strips, lowercases, and replaces non-alphanumeric
+  characters with underscores. `%` becomes the literal `_percent` to keep meaning.
+- `standardize_column_names(df)` rewrites all columns using the helper.
+
+Why it matters in this project:
+- Predictable access via `df["marks"]` rather than `df[" Marks "]`.
+
+Step 3: Apply Naming Convention (snake_case)
+
+What was implemented:
+- All headers now follow snake_case (the Python and pandas default).
+- A small `COLUMN_RENAME_MAP` aligns to the project's canonical names:
+  - `student_name` -> `name`
+  - `attendance_percent` -> `attendance`
+
+Why it matters in this project:
+- One canonical schema (`name`, `marks`, `attendance`) used across all milestones.
+
+Step 4: Verify Column Names
+
+Before vs After:
+
+| Before              | After       |
+|---------------------|-------------|
+| `Student Name `     | `name`      |
+| ` Marks `           | `marks`     |
+| ` Attendance %`     | `attendance`|
+
+Step 5: Standardize Text Data
+
+What was implemented:
+- `standardize_text_columns(df)`:
+  - `df["name"].str.strip().str.title()`
+- Result examples: `  Aisha` -> `Aisha`, `ROHIT ` -> `Rohit`, `neha` -> `Neha`.
+
+Why it matters in this project:
+- Without this, `Rohit` and `rohit` would be treated as two students.
+
+Step 6: Standardize Numeric Data
+
+What was implemented:
+- `marks`: stripped and coerced to numeric via `pd.to_numeric(..., errors="coerce")`.
+- `attendance`: `%` symbol stripped, then coerced to numeric.
+
+Why it matters in this project:
+- Risk thresholds (`marks < 50`, `attendance < 75`) require true numeric dtypes.
+
+Step 7: Fix Formatting Issues
+
+What was implemented:
+- All whitespace in headers, names, and numeric strings is removed.
+- `%` symbols are stripped from attendance values.
+
+Why it matters in this project:
+- One stray space or `%` would silently break threshold comparisons.
+
+Step 8: Compare Before vs After
+
+After standardization, the DataFrame head is now uniformly clean:
+
+| name   | marks | attendance |
+|--------|------:|-----------:|
+| Aisha  |    88 |         91 |
+| Rohit  |    49 |         79 |
+| Neha   |    72 |         70 |
+| Karan  |    83 |         86 |
+| Isha   |    95 |         98 |
+
+dtypes:
+- `name` -> `str`
+- `marks` -> `int64`
+- `attendance` -> `int64`
+
+Step 9: Apply to Project Logic
+
+What was implemented:
+- `add_risk_status(df)` runs the project's risk rule on the standardized data.
+
+Result:
+- 12 students, 7 at-risk: `['Rohit', 'Neha', 'Vikram', 'Priya', 'Sara', 'Meera', 'Arjun']`.
+
+Step 10: Avoid Common Mistakes
+
+Pitfalls flagged:
+- Renaming columns inconsistently across modules.
+- Mixing case in identity columns (`name`).
+- Treating numeric strings as numbers without explicit coercion.
+
+Step 11: Real-World Multi-Source Thinking
+
+Practical answer:
+- Different schools, systems, and exports use different conventions.
+- A single `to_snake_case` helper plus a small rename map makes any feed
+  conform to the project's canonical schema.
+
+Step 12: 2-Minute Video Preparation
+
+Explain:
+1. Why standardization is necessary before any analysis.
+2. How the `to_snake_case` rule was applied to every column.
+3. How text values were cleaned via `strip` and `title`.
+4. How `pd.to_numeric` recovered numeric columns from text-with-`%`.
+5. How the project benefits from a single canonical schema.
+
+Implemented Script
+
+- `src/at_risk_standardize_columns.py`
+
+Functions created:
+- `to_snake_case(...)` -> single column-name normalizer
+- `standardize_column_names(...)` -> apply across all columns
+- `apply_project_column_names(...)` -> map to canonical schema
+- `standardize_text_columns(...)` -> strip + title-case names
+- `standardize_numeric_columns(...)` -> strip + numeric coerce
+- `add_risk_status(...)` -> project risk rule
+- `save_cleaned_dataframe(...)` -> persists to `data/processed/`
+
+Saved artifact:
+- `data/processed/students_standardized.csv` (12 rows, schema-aligned, with `at_risk`)
+
+Milestone 4.36 Outcome
+
+You implemented:
+- A reusable standardization layer (column names, text, numeric formats).
+
+You confirmed:
+- The dataset now uses a single canonical schema.
+- Risk classification produces consistent results across messy inputs.
