@@ -3500,3 +3500,139 @@ You confirmed:
   basic statistical summaries.
 
 You are ready for the data cleaning milestones that follow.
+
+
+Milestone 4.31: Understanding Data Shapes and Column Data Types
+
+Project Upgrade Target:
+- New script: `src/at_risk_shape_and_dtypes.py`
+- New companion dataset: `data/raw/students_typed_issues.csv` with a text
+  value (`absent`) inside the `marks` column to force a real dtype problem.
+
+Note: this milestone is read-only. No data is cleaned or modified here.
+
+Step 1: Check DataFrame Shape
+
+What was implemented:
+- `report_shape(df)` prints `df.shape`, `len(df)`, and `df.columns`.
+
+Why it matters in this project:
+- `shape` reveals (students, features) -> the contract every later step relies on.
+
+Step 2: Interpret Shape
+
+What was confirmed:
+- All three datasets are `(12, 3)`:
+  - 12 rows = 12 students
+  - 3 columns = `name`, `marks`, `attendance`
+
+Why it matters in this project:
+- Confirms identical structure across files; only contents differ.
+
+Step 3: Understand Columns
+
+What was confirmed:
+- `name` -> identifier (text)
+- `marks` -> numeric feature (0..100)
+- `attendance` -> numeric feature (0..100 percentage)
+
+Why it matters in this project:
+- Each column has a fixed semantic role used by risk thresholds.
+
+Step 4: Check Data Types
+
+What was implemented:
+- `report_dtypes(df)` prints `df.dtypes` and a per-column summary using
+  `is_numeric_dtype` and `is_string_dtype`.
+
+Why it matters in this project:
+- Risk thresholds (`marks < 50`, `attendance < 75`) need numeric dtypes.
+
+Step 5: Detect Issues
+
+What was implemented:
+- `detect_type_issues(df)` flags:
+  - missing required columns
+  - numeric columns that are not numeric
+  - text columns that are not text
+
+Findings on `students_typed_issues.csv`:
+- `marks` dtype became `str` because of the value `absent`.
+- Tool reported: "Column 'marks' is not numeric (dtype=str)."
+
+Why it matters in this project:
+- Caught before any computation - prevents corrupt risk classification.
+
+Step 6: Real Problem Thinking
+
+What was demonstrated:
+- A single text value in a numeric column forces the whole column to text.
+- All numeric comparisons silently break or raise unexpected errors.
+
+Why it matters in this project:
+- Real CSVs frequently contain stray text like `absent`, `NA`, or `-`.
+- Detecting this before logic runs is essential.
+
+Step 7: Cross-Check with info()
+
+What was implemented:
+- `cross_check_with_info(df)` calls `df.info()` after dtype reporting
+  to reinforce the same conclusion from a second angle.
+
+Why it matters in this project:
+- Multiple inspection angles strengthen confidence in the diagnosis.
+
+Step 8: Apply to Project Logic
+
+What was confirmed:
+- Clean dataset: types are correct, risk math will run safely.
+- Unclean dataset: numeric dtypes preserved, but missing values must be handled.
+- Type-issue dataset: cleaning is required before risk classification.
+
+Why it matters in this project:
+- Inspection drives the cleaning plan rather than guessing.
+
+Step 9: Real-World Scale
+
+Practical answer:
+- For 100k+ row datasets, `df.shape` and `df.dtypes` are the fastest way
+  to validate that the file was read correctly.
+- Type problems detected early save hours of debugging downstream.
+
+Step 10: 2-Minute Video Preparation
+
+Explain:
+1. What `df.shape` represents (rows = students, columns = features)
+2. How to read column dtypes and what each kind allows
+3. The difference between numeric and text columns in this project
+4. How a single text value (`absent`) silently broke the `marks` column
+5. Why these checks must run before risk detection logic
+
+Implemented Script
+
+- `src/at_risk_shape_and_dtypes.py`
+
+Functions created:
+- `load_dataframe(...)` -> read-only loader
+- `report_shape(...)` -> shape, length, columns
+- `report_dtypes(...)` -> dtypes per column with numeric/text classification
+- `detect_type_issues(...)` -> programmatic type problem detection
+- `project_impact_note(...)` -> human-readable project impact summary
+- `cross_check_with_info(...)` -> reinforces diagnosis via `df.info()`
+- `run_inspection(...)` -> full per-dataset routine
+
+Sample observations:
+- `students.csv`              -> `(12, 3)`, dtypes correct
+- `students_unclean.csv`      -> `(12, 3)`, dtypes correct, missing values present
+- `students_typed_issues.csv` -> `(12, 3)`, `marks` dtype became `str`,
+  flagged as a type problem
+
+Milestone 4.31 Outcome
+
+You confirmed:
+- Dataset size: 12 rows, 3 columns across all variants.
+- Column dtypes: `name` text, `marks` and `attendance` numeric in clean files.
+- A real dtype failure mode (text in a numeric column) was detected automatically.
+
+You are ready for the data cleaning milestones where missing values and
+type problems are corrected.
