@@ -1,0 +1,13 @@
+name,marks,attendance,at_risk
+Aisha,88,91,False
+Rohit,49,79,True
+Neha,72,70,True
+Karan,83,86,False
+Isha,95,98,False
+Vikram,38,82,True
+Priya,65,68,True
+Aman,77,84,False
+Sara,42,88,True
+Dev,90,95,False
+Meera,55,72,True
+Arjun,61,67,True

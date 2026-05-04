@@ -4059,3 +4059,151 @@ You confirmed:
 - Risk classification now runs reliably across all 12 students.
 
 Project pipeline is now: raw CSV -> validated -> cleaned -> classified.
+
+
+Milestone 4.35: Identifying and Removing Duplicate Records
+
+Project Upgrade Target:
+- New input dataset: `data/raw/students_with_duplicates.csv`
+- New script:        `src/at_risk_duplicate_handling.py`
+- New artifact:      `data/processed/students_deduplicated.csv`
+
+Step 1: Understand Problem
+
+What was confirmed:
+- A duplicate student record corrupts every metric in the project.
+- A repeated row would either inflate the at-risk count or hide a real change.
+
+Why it matters in this project:
+- Educators must trust each student's count of one. Duplicates break that trust.
+
+Step 2: Detect Duplicate Rows
+
+What was implemented:
+- `report_duplicates(df)` returns:
+  - `exact` -> count from `df.duplicated()`
+  - `by_name` -> count from `df.duplicated(subset=["name"])`
+
+Findings on `students_with_duplicates.csv` (`shape=(15, 3)`):
+- Exact duplicate rows         : 2
+- Duplicate `name` rows         : 3
+
+Why it matters in this project:
+- Detection precedes removal so the strategy is informed, not blind.
+
+Step 3: Inspect Duplicates
+
+What was implemented:
+- `show_duplicate_rows(df)` prints all occurrences of duplicates so we can
+  see the actual records under inspection.
+
+Observations:
+- Aisha (88, 91) appears twice -> exact duplicate.
+- Neha (72, 70) appears twice -> exact duplicate.
+- Rohit appears twice with different values: `(49, 79)` and `(52, 80)`
+  -> partial duplicate (same name, different data).
+
+Step 4: Decide Strategy
+
+Decision flow used in this project:
+- Drop exact duplicates first (safe, clearly redundant rows).
+- Then drop name-based duplicates with `keep="first"` for the conflicting
+  Rohit case, treating the first record as canonical.
+
+Why it matters in this project:
+- Name is the identity column for students; only one record per student
+  is allowed for the at-risk decision.
+
+Step 5: Remove Exact Duplicates
+
+What was implemented:
+- `drop_exact_duplicates(df)` -> `df.drop_duplicates(keep="first")`.
+
+Result:
+- Shape went from `(15, 3)` -> `(13, 3)`. Rows removed: 2.
+
+Step 6: Column-Based Deduplication
+
+What was implemented:
+- `drop_duplicates_by_name(df)` -> `df.drop_duplicates(subset=["name"], keep="first")`.
+
+Result:
+- Shape went from `(13, 3)` -> `(12, 3)`. Rows removed: 1 (the conflicting Rohit).
+
+Step 7: Compare Before vs After
+
+| Stage                  | Shape   | Rows removed |
+|------------------------|---------|--------------|
+| Raw                    | (15, 3) | -            |
+| After exact dedup      | (13, 3) | 2            |
+| After name-based dedup | (12, 3) | 1            |
+| Total                  | (12, 3) | 3            |
+
+Step 8: Verify No Duplicates Left
+
+What was implemented:
+- `verify_no_duplicates(df, label)` re-runs `report_duplicates` and confirms
+  both counts are zero.
+
+Result:
+- `OK :: after_name has no duplicates.`
+
+Step 9: Apply to Project Logic
+
+What was implemented:
+- `add_risk_status(df)` runs the project risk rule on the deduplicated data.
+
+Result:
+- 12 unique students.
+- At-risk count: 7.
+- At-risk students: `['Rohit', 'Neha', 'Vikram', 'Priya', 'Sara', 'Meera', 'Arjun']`.
+
+Step 10: Avoid Mistakes
+
+Pitfalls flagged:
+- Removing rows blindly (without inspecting which rows differ).
+- Treating partial duplicates the same as exact duplicates.
+- Not re-verifying after deduplication.
+
+Step 11: Real-World Sources of Duplicates
+
+Common causes:
+- Manual data entry errors.
+- Repeated submissions from a UI.
+- Joining systems that share students across tables.
+
+Step 12: 2-Minute Video Preparation
+
+Explain:
+1. What duplicate records are and why they appear.
+2. How `df.duplicated()` distinguishes exact vs partial duplicates.
+3. The two-step strategy: exact dedup, then identity-based dedup.
+4. The before vs after counts in this dataset.
+5. Why deduplicated data produces trustworthy risk counts.
+
+Implemented Script
+
+- `src/at_risk_duplicate_handling.py`
+
+Functions created:
+- `load_dataframe(...)` -> CSV loader
+- `report_duplicates(...)` -> exact and identity-based counts
+- `show_duplicate_rows(...)` -> visual inspection of all duplicates
+- `drop_exact_duplicates(...)` -> exact match removal
+- `drop_duplicates_by_name(...)` -> identity-based removal
+- `verify_no_duplicates(...)` -> post-cleaning verification
+- `add_risk_status(...)` -> project risk rule
+- `print_clean_report(...)` -> final readable output
+- `save_cleaned_dataframe(...)` -> persists to `data/processed/`
+
+Saved artifact:
+- `data/processed/students_deduplicated.csv` (12 rows, includes `at_risk`)
+
+Milestone 4.35 Outcome
+
+You implemented:
+- A two-step deduplication that handles both exact and identity-based duplicates.
+
+You confirmed:
+- 3 duplicate rows removed in this run; final dataset has 12 unique students.
+- Risk classification on deduplicated data is reliable and trustworthy.
