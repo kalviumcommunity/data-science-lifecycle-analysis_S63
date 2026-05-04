@@ -3094,3 +3094,131 @@ You confirmed:
 - Vectorized math still applies through Series.
 
 You are ready to introduce DataFrames in the next milestone.
+
+
+Milestone 4.28: Creating Pandas DataFrames from Dictionaries and Files
+
+Project Upgrade Target:
+- New script: `src/at_risk_pandas_dataframe.py`
+- New dataset:  `data/raw/students.csv`
+- The project is now data-driven: it builds a DataFrame from a dictionary
+  and also loads the dataset from a real CSV file.
+
+Step 1: Understand DataFrame
+
+What was implemented:
+- DataFrame represents a table where rows are students and columns are features.
+- Each row carries `name`, `marks`, and `attendance` together.
+
+Why it matters in this project:
+- Real datasets are tabular. This is the format used by every production data tool.
+
+Step 2: Create DataFrame from Dictionary
+
+What was implemented:
+- `build_students_dataframe_from_dict()` constructs a `(5, 3)` DataFrame.
+
+Why it matters in this project:
+- Quick way to bootstrap data without external files; useful for demos and tests.
+
+Step 3: Inspect DataFrame
+
+What was implemented:
+- `inspect_dataframe(label, df)` prints `head()`, `shape`, `columns`, and `dtypes`.
+
+Why it matters in this project:
+- Inspection is the first defensive step before any analysis.
+
+Step 4: Understand Structure
+
+What was confirmed:
+- Rows -> students, columns -> features (`name`, `marks`, `attendance`).
+- `df.shape` -> `(students, columns)`.
+
+Why it matters in this project:
+- Locks down the mental model used for every later operation.
+
+Step 5: Move to File-Based Data
+
+What was implemented:
+- Created `data/raw/students.csv` with seven student records.
+- `load_students_dataframe_from_csv(csv_path)` uses `pd.read_csv(...)` and
+  raises `FileNotFoundError` if the path is missing.
+
+Why it matters in this project:
+- Real-world data arrives from files, databases, and APIs - not hardcoded lists.
+
+Step 6: Inspect Loaded Data
+
+What was confirmed:
+- File-based DataFrame shape: `(7, 3)`.
+- Columns and dtypes match the dictionary version.
+
+Why it matters in this project:
+- Comparing structure before/after loading prevents silent contract drift.
+
+Step 7: Compare Dictionary vs File
+
+Dictionary:
+- fast for tests, demos, and small fixtures
+- not realistic for production
+
+File:
+- represents the true data flow in industry
+- enables version control of the dataset
+
+Step 8: Integrate into Project
+
+What was implemented:
+- `add_risk_status_column(df)` adds an `at_risk` boolean column using
+  vectorized DataFrame conditions:
+  - `(df['marks'] < 50) | (df['attendance'] < 75)`
+- `print_clean_report(df)` prints the table with the new column and a
+  summary including a list of at-risk student names.
+
+Why it matters in this project:
+- The detection logic now operates on a real dataset structure, not loose arrays.
+
+Step 9: Real-World Scale
+
+Practical answer:
+- Same code handles 7 or 7,000 rows without changes.
+- Loading large CSVs is one line; row-level vectorized logic stays identical.
+
+Step 10: Clean Output
+
+What was implemented:
+- `df.to_string(index=False)` for compact, readable display.
+- Summary section lists at-risk students by name.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What a DataFrame is (table with rows, columns, and dtypes)
+2. Difference between Series (one labeled column) and DataFrame (many columns)
+3. How the DataFrame was built from a dictionary
+4. How `pd.read_csv(...)` loaded the file from `data/raw/students.csv`
+5. How adding `at_risk` as a column made the project fully data-driven
+
+Implemented Script
+
+- `src/at_risk_pandas_dataframe.py`
+
+Functions created:
+- `build_students_dataframe_from_dict()` -> in-memory DataFrame
+- `load_students_dataframe_from_csv(csv_path)` -> file-based DataFrame
+- `inspect_dataframe(label, df)` -> head, shape, columns, dtypes
+- `add_risk_status_column(df)` -> vectorized boolean column
+- `print_clean_report(df)` -> readable per-row table and summary
+
+Milestone 4.28 Outcome
+
+You upgraded:
+- The project's data layer from arrays/Series to a real DataFrame loaded
+  from a CSV file at `data/raw/students.csv`.
+
+You confirmed:
+- The project is now data-driven and ready for analysis-grade operations.
+
+You are ready for the next milestone where this DataFrame becomes the
+foundation of filtering, grouping, and analysis steps.
