@@ -3912,3 +3912,150 @@ You confirmed:
 
 You are ready for the data cleaning milestone where these gaps are
 addressed with a deliberate strategy.
+
+
+Milestone 4.34: Handling Missing Values Using Drop and Fill Strategies
+
+Project Upgrade Target:
+- New script: `src/at_risk_missing_value_handling.py`
+- New artifact: `data/processed/students_cleaned.csv`
+- Project pipeline now follows raw -> processed: cleaned data is saved.
+
+Step 1: Understand Impact
+
+What was confirmed:
+- Risk thresholds (`marks < 50`, `attendance < 75`) cannot be applied to NaN.
+- Without cleaning, students with missing values produce unreliable results.
+
+Why it matters in this project:
+- Decisions on intervention must be based on complete data per student.
+
+Step 2: Analyze Missing Data
+
+What was implemented:
+- `report_missing_status(df, label)` prints shape, total NaN, and per-column counts.
+
+Findings on `students_unclean.csv`:
+- Shape: `(12, 3)`
+- Total NaN: 2
+- 1 missing in `marks`, 1 missing in `attendance`
+
+Why it matters in this project:
+- Severity drives the choice between drop and fill.
+
+Step 3: Apply Drop Strategy
+
+What was implemented:
+- `drop_rows_with_missing(df)` -> uses `dropna(subset=["marks", "attendance"])`.
+- Result: shape becomes `(10, 3)`. Rows lost: 2 (`Neha`, `Isha`).
+
+Why it matters in this project:
+- Drop is the fastest path but discards real student records.
+
+Step 4: Evaluate Drop Impact
+
+Observation:
+- We would lose 16.67% of the dataset.
+- For a small class of 12, losing 2 students is significant.
+
+Step 5: Apply Fill Strategy
+
+What was implemented:
+- `fill_with_column_mean(df)` fills NaNs with the column mean (rounded to 2 decimals).
+- Filled values:
+  - `Neha.marks      = 67.55` (mean of remaining marks)
+  - `Isha.attendance = 80.18` (mean of remaining attendance)
+
+Why it matters in this project:
+- Preserves dataset size and lets every student stay in the analysis.
+
+Step 6: Compare Before vs After
+
+| Strategy | Shape | NaN remaining |
+|----------|------|---------------|
+| Raw      | (12, 3) | 2 |
+| Dropped  | (10, 3) | 0 |
+| Filled   | (12, 3) | 0 |
+
+Why it matters in this project:
+- Side-by-side numbers make the cleaning trade-off explicit.
+
+Step 7: Choose Best Strategy
+
+What was implemented:
+- `choose_strategy(df)` decides automatically based on data loss percentage:
+  - `<= 5%` -> drop
+  - `> 5%`  -> fill
+
+Decision in this run:
+- Drop loss = 16.67% -> **fill** strategy chosen.
+- Reason recorded: filling preserves dataset size while keeping averages close to original.
+
+Why it matters in this project:
+- A defensible, automated rule prevents arbitrary cleaning choices.
+
+Step 8: Avoid Mistakes
+
+Pitfalls flagged:
+- Filling blindly without checking column stats.
+- Dropping important columns or majority of rows.
+- Skipping documentation of which strategy was used and why.
+
+Step 9: Apply to Project Logic
+
+What was implemented:
+- `add_risk_status(df)` runs the project's risk rule on cleaned data:
+  - `(marks < 50) | (attendance < 75)`
+
+Result on the filled dataset:
+- 12 students (all retained)
+- 7 at-risk: `['Rohit', 'Neha', 'Vikram', 'Priya', 'Sara', 'Meera', 'Arjun']`
+
+Why it matters in this project:
+- Risk classification is now reliable because no NaNs remain.
+
+Step 10: Real-World Scale
+
+Practical answer:
+- If 50% of values were missing, neither drop nor mean-fill would be acceptable.
+- The right path would be:
+  - escalate to data engineering for source fix
+  - or apply a more rigorous imputation method (out of scope here)
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. Why missing values must be handled before any analysis
+2. What `dropna` does and when it is appropriate
+3. What `fillna` does and the trade-off of mean imputation
+4. Why fill was chosen for this dataset (loss percentage)
+5. How the cleaned dataset is now safe for risk classification
+
+Implemented Script
+
+- `src/at_risk_missing_value_handling.py`
+
+Functions created:
+- `load_dataframe(...)` -> CSV loader
+- `report_missing_status(...)` -> NaN inspection
+- `drop_rows_with_missing(...)` -> drop strategy
+- `fill_with_column_mean(...)` -> fill strategy (mean per column)
+- `choose_strategy(...)` -> auto decision based on loss percentage
+- `add_risk_status(...)` -> project risk rule
+- `print_clean_report(...)` -> educator-friendly result
+- `save_cleaned_dataframe(...)` -> persists to `data/processed/students_cleaned.csv`
+
+Saved artifact:
+- `data/processed/students_cleaned.csv` (12 rows, 4 columns including `at_risk`)
+
+Milestone 4.34 Outcome
+
+You implemented:
+- A real cleaning step that handles missing values with a defensible
+  drop-vs-fill decision rule.
+
+You confirmed:
+- The cleaned dataset is saved into `data/processed/`.
+- Risk classification now runs reliably across all 12 students.
+
+Project pipeline is now: raw CSV -> validated -> cleaned -> classified.
