@@ -3362,3 +3362,141 @@ You upgraded:
 You confirmed:
 - The project is now file-driven, validated, and ready for data cleaning
   and analysis in the next milestones.
+
+
+Milestone 4.30: Inspecting DataFrames using head(), info(), and describe()
+
+Project Upgrade Target:
+- New script: `src/at_risk_inspect_dataframe.py`
+- New companion dataset: `data/raw/students_unclean.csv` with intentional
+  missing values to make `info()` and `describe()` reveal real findings.
+
+Note: this milestone is read-only. No data is cleaned or modified here.
+
+Step 1: head() - First Look
+
+What was implemented:
+- `show_head(df, label)` prints `df.head()` for a quick visual confirmation.
+
+Why it matters in this project:
+- Confirms columns, alignment, and basic shape before any computation.
+
+Step 2: Understand Columns
+
+What was confirmed:
+- Columns: `name`, `marks`, `attendance`.
+- `name` is text, `marks` and `attendance` are numeric features.
+
+Why it matters in this project:
+- Locks down the contract between the dataset and project logic.
+
+Step 3: info() - Structure Check
+
+What was implemented:
+- `show_info(df, label)` prints `df.info()` and `df.isnull().sum()`.
+
+Why it matters in this project:
+- Reveals dtypes and exact non-null counts per column.
+- Exposes any silent type drift between numeric and text data.
+
+Step 4: Detect Issues
+
+What was observed:
+- `students.csv` (clean): 12 non-null rows in every column.
+- `students_unclean.csv`:
+  - `marks`: 11 non-null (1 missing)
+  - `attendance`: 11 non-null (1 missing)
+  - dtypes shifted to `float64` because of NaNs.
+
+Why it matters in this project:
+- Missing values directly affect risk classification correctness.
+
+Step 5: describe() - Statistical Summary
+
+What was implemented:
+- `show_describe(df, label)` prints `df.describe(include="all")`.
+
+Why it matters in this project:
+- Provides count, mean, min, max, and percentiles for numeric columns.
+- Includes top/freq for text columns.
+
+Step 6: Interpret Results
+
+Findings on `students.csv` (clean):
+- Marks: `min=38, max=95, mean=67.92`
+- Attendance: `min=67, max=98, mean=81.67`
+- Students with marks `<` 50: 3
+- Students with attendance `<` 75%: 4
+
+Findings on `students_unclean.csv`:
+- 1 missing value in `marks`
+- 1 missing value in `attendance`
+- Distribution slightly shifted because nulls were dropped before stats
+
+Why it matters in this project:
+- Students far below the means are early candidates for risk follow-up.
+
+Step 7: Combine All Three Methods
+
+What was implemented:
+- `run_inspection(df, label)` chains:
+  1. `show_head` -> visual check
+  2. `show_info` -> structural check
+  3. `show_describe` -> statistical summary
+  4. `interpret_findings` -> human-readable observations
+
+Why it matters in this project:
+- These three views together build a complete inspection habit.
+
+Step 8: Apply to Project Thinking
+
+Observations driving decisions:
+- Clean dataset is ready for direct analysis.
+- Unclean dataset must be cleaned before risk classification can be trusted.
+- Some students sit close to threshold boundaries and may need a second look.
+
+Why it matters in this project:
+- Inspection drives the cleaning plan, not the other way around.
+
+Step 9: Real-World Scale
+
+Practical answer:
+- Real datasets almost always have missing values.
+- The same inspection routine works whether the file has 12 or 1.2 million rows.
+
+Step 10: 2-Minute Video Preparation
+
+Explain:
+1. Why inspection comes before any analysis or cleaning
+2. What `head()` shows (visual layout and first values)
+3. What `info()` reveals (dtypes, non-null counts, memory)
+4. What `describe()` summarizes (count, mean, min, max, percentiles)
+5. How these three views helped identify issues in the unclean dataset
+
+Implemented Script
+
+- `src/at_risk_inspect_dataframe.py`
+
+Functions created:
+- `load_dataframe(csv_path)` -> read-only loader
+- `show_head(df, label)` -> visual preview
+- `show_info(df, label)` -> dtypes + null counts
+- `show_describe(df, label)` -> statistical summary
+- `interpret_findings(df, label)` -> human-readable observations
+- `run_inspection(df, label)` -> full inspection sequence
+
+Sample observations:
+- `students.csv` -> shape `(12, 3)`, no missing values
+- `students_unclean.csv` -> shape `(12, 3)`, 1 missing in `marks`, 1 in `attendance`
+
+Milestone 4.30 Outcome
+
+You learned:
+- The discipline of inspecting before analyzing.
+
+You confirmed:
+- Your project can now produce a complete inspection report on any
+  loaded student CSV - including detection of missing values and
+  basic statistical summaries.
+
+You are ready for the data cleaning milestones that follow.
