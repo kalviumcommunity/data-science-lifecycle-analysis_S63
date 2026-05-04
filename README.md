@@ -2969,3 +2969,128 @@ You confirmed:
 - You can recognize and resolve shape-mismatch errors confidently.
 
 You are ready for advanced data operations on tabular datasets.
+
+
+Milestone 4.27: Creating Pandas Series from Lists and Arrays
+
+Project Upgrade Target:
+- New script: `src/at_risk_pandas_series.py`
+- Numeric data is now labeled with student names using pandas Series.
+
+Step 1: Understand the Problem
+
+What was identified:
+- NumPy arrays store values without meaning. Position alone tells which student a value belongs to.
+
+Why it matters in this project:
+- Reports must be readable for educators; positions are not human-friendly.
+
+Step 2: Import Pandas
+
+What was added:
+- `import pandas as pd`
+
+Why it matters in this project:
+- Pandas is built for labeled data and tabular workflows.
+
+Step 3: Create Series from List
+
+What was implemented:
+- `make_marks_series_from_list(...)` -> default integer index `0..4`.
+
+Why it matters in this project:
+- Confirms the simplest path: list -> Series.
+
+Step 4: Add Custom Index (Student Names)
+
+What was implemented:
+- `make_marks_series_with_names(...)` uses `index=student_data["names"]`.
+
+Why it matters in this project:
+- Each value is now tied directly to a student name.
+
+Step 5: Create Series from NumPy Array
+
+What was implemented:
+- `make_attendance_series_from_array(...)` builds a Series from `np.array(...)`.
+
+Why it matters in this project:
+- Combines NumPy efficiency with pandas labeling.
+
+Step 6: Inspect Series
+
+What was inspected:
+- `series.values`, `series.index`, `series.dtype`, `series.name`.
+
+Why it matters in this project:
+- Confirms structure before any computation.
+
+Step 7: Label-Based Access
+
+What was demonstrated:
+- `marks_series['Aisha']` returns the value for that student.
+- `marks_series[['Aisha', 'Neha', 'Isha']]` returns a labeled subset.
+
+Why it matters in this project:
+- Domain-friendly access by name beats remembering positions.
+
+Step 8: Array vs Series Comparison
+
+NumPy array:
+- positional only, no built-in meaning per element.
+
+Pandas Series:
+- carries an index, dtype, and a name; output is self-explaining.
+
+Step 9: Apply to Project Logic
+
+What was implemented:
+- `detect_at_risk_with_series(marks_series, attendance_series)`:
+  - Vectorized, label-aligned condition:
+    `(marks < 50) | (attendance < 75)`
+  - Returns a boolean Series named `at_risk` with student names as index.
+- `print_named_risk_report(...)` produces a per-student table and a list
+  of at-risk student names.
+
+Why it matters in this project:
+- Output is now meaningful: educators see names, not positions.
+
+Step 10: Real-World Scale
+
+What was demonstrated:
+- Series scale exactly like NumPy arrays.
+- As the dataset grows, labels prevent mismatched rows during joins later.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What a pandas Series is (values + index + name)
+2. Difference between a NumPy array and a Series
+3. How student names became the Series index
+4. Why label-based access is safer and more readable
+5. How this improved the at-risk reporting
+
+Implemented Script
+
+- `src/at_risk_pandas_series.py`
+
+Functions created:
+- `make_marks_series_from_list(...)` -> default integer index
+- `make_marks_series_with_names(...)` -> custom name-based index
+- `make_attendance_series_from_array(...)` -> Series from NumPy array
+- `inspect_series(...)` -> values, index, dtype, name
+- `show_label_access(...)` -> label-based selection examples
+- `array_vs_series_demo(...)` -> direct contrast
+- `detect_at_risk_with_series(...)` -> vectorized, label-aware mask
+- `print_named_risk_report(...)` -> educator-friendly output
+
+Milestone 4.27 Outcome
+
+You upgraded:
+- Numeric arrays into labeled Series with student names as the index.
+
+You confirmed:
+- Output is meaningful and aligned by name.
+- Vectorized math still applies through Series.
+
+You are ready to introduce DataFrames in the next milestone.
