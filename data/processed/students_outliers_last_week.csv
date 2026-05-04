@@ -1,0 +1,13 @@
+name,marks,attendance,marks_iqr_outlier,attendance_iqr_outlier,outlier_type,is_outlier,recommended_action
+Aisha,91,95,False,False,Typical,False,Monitor as part of regular review.
+Aman,77,84,False,False,Typical,False,Monitor as part of regular review.
+Arjun,61,67,False,False,Typical,False,Monitor as part of regular review.
+Dev,91,95,False,False,Typical,False,Monitor as part of regular review.
+Isha,95,98,False,False,Typical,False,Monitor as part of regular review.
+Karan,84,87,False,False,Typical,False,Monitor as part of regular review.
+Meera,55,75,False,False,Typical,False,Monitor as part of regular review.
+Neha,69,60,False,False,Typical,False,Monitor as part of regular review.
+Priya,65,68,False,False,Typical,False,Monitor as part of regular review.
+Rohit,45,72,False,False,Type 3: Critical Case,True,Immediate counseling + parent meeting.
+Sara,42,78,False,False,Typical,False,Monitor as part of regular review.
+Vikram,38,82,False,False,Type 2: Struggling Student,True,Offer learning support / tutoring; check method.

@@ -5298,3 +5298,203 @@ You confirmed:
 
 You are ready for deeper analysis combining all four visual tools
 into the final risk dashboard.
+
+
+Milestone 4.43: Detecting Outliers (Project-Aware, Never Auto-Removed)
+
+Project Upgrade Target:
+- New script: `src/at_risk_outliers.py`
+- Inputs:
+  - `data/processed/students_standardized.csv` (snapshot)
+  - `data/raw/students_timeseries.csv` (last-week)
+- Outputs:
+  - `outputs/outliers_snapshot.png`
+  - `outputs/outliers_last_week.png`
+  - `data/processed/students_outliers_snapshot.csv`
+  - `data/processed/students_outliers_last_week.csv`
+
+Constraints honored:
+- No complex math beyond IQR comparisons.
+- No automatic removal of outlier rows.
+- Each outlier carries a category and a recommended action.
+
+Step 1: Understand Outliers
+
+What was confirmed:
+- An outlier is a student whose `(marks, attendance)` point sits far
+  from the typical group. Two project examples:
+  - very high attendance + very low marks
+  - very low attendance + very high marks
+
+Why it matters in this project:
+- Outliers can hide *risk* (struggling student with good attendance)
+  or hide *talent* (smart but disengaged student). Both deserve a
+  conversation, not a silent delete.
+
+Step 2: Detect Outliers Using Boxplot (IQR)
+
+What was implemented:
+- `compute_iqr_bounds(series)` returns Q1, Q3, IQR, and the whisker
+  bounds (Q1 - 1.5*IQR, Q3 + 1.5*IQR).
+- `is_iqr_outlier(value, bounds)` returns True if the value is
+  outside the whiskers.
+
+Findings:
+- On both the snapshot and the last-week views, **no point falls
+  outside the IQR whiskers**. With only 12 students the whiskers are
+  very wide (lower bounds <8 and <3 for marks), so IQR alone is not
+  sensitive enough for this project.
+- This is why the project also uses rule-based outliers (Step 5).
+
+Step 3: Detect Outliers Using Scatter Plot
+
+What was implemented:
+- `plot_outlier_scatter(...)` draws all 12 students with four
+  category colors and four reference lines:
+  - red dashed at marks=50 (passing rule)
+  - green dotted at marks=75 (high marks line)
+  - purple dashed at attendance=75 (attendance rule)
+  - teal dotted at attendance=80 (high attendance line)
+
+Why it matters in this project:
+- The lines split the chart into a 3x3 grid that aligns directly
+  with the project's outlier categories.
+
+Step 4: Apply a Simple Rule
+
+What was implemented:
+- A clear, no-math rule per category (in `classify_outlier_type`):
+  - Type 1 Unusual Performer  : `marks >= 75` AND `attendance < 75`
+  - Type 2 Struggling Student : `marks < 50` AND `attendance >= 80`
+  - Type 3 Critical Case      : `marks < 50` AND `attendance < 75`
+  - Type 4 Statistical (IQR)  : outside whiskers on either column
+  - otherwise -> `Typical`
+
+Step 5: Interpret Outliers (most important)
+
+Findings (snapshot dataset):
+- `Vikram (38, 82)` and `Sara (42, 88)` -> **Type 2 Struggling**.
+  They show up regularly but still score below the passing line.
+  This is exactly the group that boxplots/scatter plots make visible
+  and that a casual look at attendance alone would miss.
+- No `Type 3 Critical Case` in the snapshot.
+
+Findings (last-week of time-series):
+- `Rohit (45, 72)` -> **Type 3 Critical Case** by week 5.
+  This is the same student we saw declining in 4.41; the trend
+  pushed him into the worst quadrant.
+- `Vikram (38, 82)` -> still **Type 2**, persistently low marks.
+
+Why it matters in this project:
+- The same student can change category over time. Detecting it
+  early is the entire point of the project.
+
+Step 6: Categorize Outliers
+
+What was implemented:
+- `add_outlier_columns(df)` adds:
+  - `marks_iqr_outlier`
+  - `attendance_iqr_outlier`
+  - `outlier_type`
+  - `is_outlier`
+  - `recommended_action`
+- `OUTLIER_ACTIONS` is the project's interpretation table:
+  - Unusual Performer  -> "Verify integrity, then mentor for engagement."
+  - Struggling Student -> "Offer learning support / tutoring; check method."
+  - Critical Case      -> "Immediate counseling + parent meeting."
+  - Statistical (IQR)  -> "Investigate before any action; statistical edge case."
+  - Typical            -> "Monitor as part of regular review."
+
+Step 7: Connect to Project Goal
+
+Decision recorded in the script:
+- Not every outlier is an at-risk student. The chart can flag a
+  high performer who skipped class because of illness; that is an
+  outlier but not a risk. The action column makes the distinction
+  explicit.
+
+Step 8: Avoid Common Mistakes
+
+Pitfalls flagged in code/docs:
+- No row is dropped automatically. Outlier rows are *labeled*, not
+  removed.
+- IQR alone is not enough on small datasets; rule-based categories
+  are required to capture project meaning.
+- Statistical and project-rule outliers are tracked in separate
+  columns (`marks_iqr_outlier`, `outlier_type`).
+
+Step 9: Build Data Scientist Thinking
+
+Per-category school actions captured in the script:
+- Unusual Performer  -> investigate first, then mentor.
+- Struggling Student -> tutoring + study-method review.
+- Critical Case      -> direct counseling + family contact.
+- Statistical (IQR)  -> never act on the number alone; investigate.
+
+Step 10: Final Insight Integration
+
+How EDA stacks up now:
+- Histograms (4.39) -> where most values are.
+- Boxplots (4.40)   -> spread + whisker outliers.
+- Line plots (4.41) -> direction of change over time.
+- Scatter (4.42)    -> joint behavior + four risk quadrants.
+- Outliers (4.43)   -> labeled + actionable categories.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. What an outlier means in this project.
+2. How boxplot (IQR) and scatter plot complement each other for detection.
+3. The four project categories with one example each.
+4. Why we never delete outliers automatically.
+5. How the recommended-action column turns insights into school actions.
+
+Implemented Script
+
+- `src/at_risk_outliers.py`
+
+Functions created:
+- `compute_iqr_bounds(series)` and `is_iqr_outlier(value, bounds)`
+- `classify_outlier_type(row, marks_bounds, attendance_bounds)`
+- `add_outlier_columns(df)` -> labels + actions
+- `plot_outlier_scatter(df, title, output_path)` -> 3x3 zoned scatter
+- `print_iqr_bounds`, `print_outlier_breakdown`, `print_outlier_table`
+- `run_for_dataset(df, label, scatter_filename, csv_filename)` -> wrapper
+
+Saved figures and CSVs:
+- `outputs/outliers_snapshot.png`
+- `outputs/outliers_last_week.png`
+- `data/processed/students_outliers_snapshot.csv`
+- `data/processed/students_outliers_last_week.csv`
+
+Sample numbers:
+- Snapshot: Type 2 = `[Vikram, Sara]`; Types 1, 3, 4 = empty.
+- Last-week: Type 2 = `[Vikram]`; Type 3 = `[Rohit]`; Types 1, 4 = empty.
+
+Milestone 4.43 Outcome
+
+You produced:
+- Two categorized outlier scatter plots and two outlier-labeled CSVs.
+
+You confirmed:
+- IQR alone is not sensitive enough on this small dataset; rule-based
+  categories are necessary to surface meaningful project outliers.
+- The same student can move category across time (e.g., Rohit moves
+  from Typical/Low-marks-only to Type 3 Critical Case by week 5).
+- Each outlier now carries a recommended action; nothing is deleted.
+
+Types of outliers found:
+- Type 1 Unusual Performer    : 0 (in this dataset)
+- Type 2 Struggling Student   : 2 (snapshot) / 1 (last-week)
+- Type 3 Critical Case        : 0 (snapshot) / 1 (last-week)
+- Type 4 Statistical (IQR)    : 0
+
+Their meaning and impact on the project:
+- Type 2 students push the project to look beyond attendance alone.
+- The Type 3 emergence on the time-series view validates trend-based
+  monitoring (4.41) - early signals matter.
+- The action column converts EDA insights into a small but real
+  intervention plan, which is the goal of the system.
+
+You have completed full EDA on the project and are ready to move to
+deeper risk-modeling and decision-pipeline milestones.
