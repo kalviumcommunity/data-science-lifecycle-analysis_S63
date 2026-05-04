@@ -2195,3 +2195,136 @@ You improved:
 
 You achieved:
 - Review-ready, professional readability without changing core features.
+
+
+Milestone 4.21: Structuring Python Code for Readability and Reuse
+
+Code Restructure Target:
+- `src/at_risk_return_pipeline.py`
+
+Step 1: Analyze Current Code
+
+What was reviewed:
+- Mixed concerns: data, logic, output, and constants were entangled.
+- No section markers; reader had to scan top-to-bottom to find anything.
+- Configuration values (thresholds, status labels) hardcoded inside logic.
+
+Why it improves structure:
+- Unstructured code becomes hard to scale or modify safely.
+
+Step 2: Define Proper Structure
+
+What was implemented:
+The script is now organized into seven labeled sections:
+1. Imports
+2. Constants and Configuration
+3. Type Definitions
+4. Data Setup
+5. Risk Evaluation Functions
+6. Reporting Functions
+7. Main Execution
+
+Why it improves structure:
+- Standard layout matches how professional Python projects are organized.
+- Reviewers locate concerns in seconds.
+
+Step 3: Move Functions Above Execution
+
+What was changed:
+- All function definitions appear before `main()`.
+- `main()` only orchestrates — it does not define behavior inline.
+
+Why it improves structure:
+- Functions exist in scope before they are called.
+- Reading order matches execution order.
+
+Step 4: Separate Data and Logic
+
+What was changed:
+- Sample dataset moved into `load_student_records()`.
+- Logic functions never reference data literals directly.
+
+Why it improves structure:
+- Data source can later be swapped (file, database, API) with no logic change.
+- Logic and data evolve independently.
+
+Step 5: Clean Main Execution
+
+What was changed:
+`main()` now reads as a four-line story:
+1. `student_records = load_student_records()`
+2. `results = evaluate_all_students(student_records)`
+3. `summary = summarize_results(results)`
+4. `print_report(results, summary)`
+
+Why it improves structure:
+- A reader understands the program's intent without diving into details.
+
+Step 6: Remove Repetition
+
+What was changed:
+- Hardcoded `0..100` range checks replaced with reusable `is_score_valid()`.
+- Status strings replaced with constants (`STATUS_AT_RISK`, `STATUS_SAFE`, `STATUS_INVALID`).
+- Per-student loop body extracted into `evaluate_all_students()`.
+
+Why it improves structure:
+- One source of truth for thresholds, labels, and validation rules.
+- Bug fixes happen in exactly one place.
+
+Step 7: Improve Flow
+
+What was changed:
+- Code reads naturally top-to-bottom: configuration -> types -> data -> logic -> reporting -> execution.
+
+Why it improves structure:
+- No backward jumping required to understand context.
+
+Step 8: Add Section Comments
+
+What was changed:
+- Each section is preceded by a clear banner comment such as
+  `# Section 5: Risk Evaluation Functions`.
+
+Why it improves structure:
+- Section markers act as built-in navigation for large files.
+
+Step 9: Real-World Scalability
+
+Thinking check:
+- Will this structure handle 1000 students or new rules?
+
+Practical answer:
+- `evaluate_all_students()` already scales to any list size.
+- Adding new policies means updating constants or adding one focused function.
+- No restructuring needed when the project grows.
+
+Step 10: Before vs After Summary
+
+Before:
+- One long `main()` mixing data, loops, formatting, and printing.
+- Magic numbers and string literals scattered across logic.
+
+After:
+- Configuration, data, evaluation, and reporting cleanly separated.
+- `main()` becomes a high-level orchestrator.
+
+Result:
+- Same behavior, dramatically higher maintainability.
+
+Step 11: 2-Minute Video Preparation
+
+Explain:
+1. Why code structure matters once a project grows
+2. The seven sections you created and what each owns
+3. How `main()` now reads like a story
+4. Why constants and helper functions remove duplication
+5. How this structure scales to thousands of records
+
+Milestone 4.21 Outcome
+
+You implemented:
+- A professional, section-based architecture in the existing project script.
+
+You achieved:
+- Scalable, maintainable structure with clear separation of concerns.
+- Same observable behavior, validated by a successful run after refactor.

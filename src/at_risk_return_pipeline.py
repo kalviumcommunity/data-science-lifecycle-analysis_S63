@@ -1,65 +1,60 @@
-"""Milestone 4.19: Passing data into functions and returning results.
+"""Milestone 4.21: Structured At-Risk Student Detection pipeline.
 
 Project: At-Risk Student Detection System
-Focus: clean input-output function pipeline
+Focus: clear sections, grouped functions, clean main execution.
 """
 
-
-def evaluate_student_risk(marks: float, attendance_percentage: float) -> str:
-    """Return risk classification using marks and attendance thresholds."""
-    if marks < 0 or marks > 100 or attendance_percentage < 0 or attendance_percentage > 100:
-        return "Invalid Data"
-    if marks < 50 or attendance_percentage < 75:
-        return "At Risk"
-    return "Safe"
+# ---------------------------------------------------------------------------
+# Section 1: Imports
+# ---------------------------------------------------------------------------
+from typing import TypedDict
 
 
-def build_result_record(student: dict[str, float | str], risk_status: str) -> dict[str, float | str]:
-    """Create normalized result record from raw student + risk result."""
-    return {
-        "name": str(student["name"]),
-        "marks": float(student["marks"]),
-        "attendance": float(student["attendance"]),
-        "status": risk_status,
-    }
+# ---------------------------------------------------------------------------
+# Section 2: Constants and Configuration
+# ---------------------------------------------------------------------------
+# Thresholds are centralized so that policy changes need exactly one edit.
+PASSING_MARKS_THRESHOLD = 50
+MIN_ATTENDANCE_PERCENTAGE = 75
+VALID_SCORE_RANGE = (0, 100)
+
+STATUS_AT_RISK = "At Risk"
+STATUS_SAFE = "Safe"
+STATUS_INVALID = "Invalid Data"
+
+REPORT_DIVIDER_WIDTH = 84
+REPORT_TITLE = "=== At-Risk Student Detection (Structured Pipeline) ==="
 
 
-def format_result_line(result: dict[str, float | str]) -> str:
-    """Convert result record into educator-friendly output text."""
-    return (
-        f"Student: {result['name']:<10} | Marks: {result['marks']:>5.1f} | "
-        f"Attendance: {result['attendance']:>5.1f}% | Status: {result['status']}"
-    )
+# ---------------------------------------------------------------------------
+# Section 3: Type Definitions
+# ---------------------------------------------------------------------------
+class StudentRecord(TypedDict):
+    name: str
+    marks: float
+    attendance: float
 
 
-def summarize_results(results: list[dict[str, float | str]]) -> dict[str, int]:
-    """Return aggregate project metrics from result records."""
-    valid_student_count = 0
-    at_risk_student_count = 0
-    safe_student_count = 0
-    invalid_record_count = 0
-
-    for result in results:
-        risk_status = str(result["status"])
-        if risk_status == "Invalid Data":
-            invalid_record_count += 1
-            continue
-        valid_student_count += 1
-        if risk_status == "At Risk":
-            at_risk_student_count += 1
-        elif risk_status == "Safe":
-            safe_student_count += 1
-
-    return {
-        "valid": valid_student_count,
-        "at_risk": at_risk_student_count,
-        "safe": safe_student_count,
-        "invalid": invalid_record_count,
-    }
+class ResultRecord(TypedDict):
+    name: str
+    marks: float
+    attendance: float
+    status: str
 
 
-def main() -> None:
-    student_records = [
+class SummaryMetrics(TypedDict):
+    valid: int
+    at_risk: int
+    safe: int
+    invalid: int
+
+
+# ---------------------------------------------------------------------------
+# Section 4: Data Setup
+# ---------------------------------------------------------------------------
+def load_student_records() -> list[StudentRecord]:
+    """Return the sample dataset used by the detection system."""
+    return [
         {"name": "Aisha", "marks": 88, "attendance": 91},
         {"name": "Rohit", "marks": 49, "attendance": 79},
         {"name": "Neha", "marks": 72, "attendance": 70},
@@ -68,30 +63,94 @@ def main() -> None:
         {"name": "InvalidRecordDemo", "marks": 130, "attendance": 55},
     ]
 
-    # Build results first, then format output and aggregate metrics.
-    results: list[dict[str, float | str]] = []
+
+# ---------------------------------------------------------------------------
+# Section 5: Risk Evaluation Functions
+# ---------------------------------------------------------------------------
+def is_score_valid(score: float) -> bool:
+    """Return True when score is within the allowed numeric range."""
+    minimum, maximum = VALID_SCORE_RANGE
+    return minimum <= score <= maximum
+
+
+def evaluate_student_risk(marks: float, attendance_percentage: float) -> str:
+    """Return risk classification using marks and attendance thresholds."""
+    if not is_score_valid(marks) or not is_score_valid(attendance_percentage):
+        return STATUS_INVALID
+    if marks < PASSING_MARKS_THRESHOLD or attendance_percentage < MIN_ATTENDANCE_PERCENTAGE:
+        return STATUS_AT_RISK
+    return STATUS_SAFE
+
+
+def build_result_record(student: StudentRecord, risk_status: str) -> ResultRecord:
+    """Create a normalized result record from a raw student plus its status."""
+    return {
+        "name": str(student["name"]),
+        "marks": float(student["marks"]),
+        "attendance": float(student["attendance"]),
+        "status": risk_status,
+    }
+
+
+def evaluate_all_students(student_records: list[StudentRecord]) -> list[ResultRecord]:
+    """Run risk evaluation across every student and return result records."""
+    results: list[ResultRecord] = []
     for student in student_records:
         marks = float(student["marks"])
         attendance_percentage = float(student["attendance"])
-
         risk_status = evaluate_student_risk(marks, attendance_percentage)
-        result = build_result_record(student, risk_status)
-        results.append(result)
+        results.append(build_result_record(student, risk_status))
+    return results
 
-    print("=== At-Risk Student Detection (Return Pipeline) ===")
+
+# ---------------------------------------------------------------------------
+# Section 6: Reporting Functions
+# ---------------------------------------------------------------------------
+def format_result_line(result: ResultRecord) -> str:
+    """Convert a result record into an educator-friendly output line."""
+    return (
+        f"Student: {result['name']:<18} | Marks: {result['marks']:>5.1f} | "
+        f"Attendance: {result['attendance']:>5.1f}% | Status: {result['status']}"
+    )
+
+
+def summarize_results(results: list[ResultRecord]) -> SummaryMetrics:
+    """Return aggregate metrics computed from result records."""
+    summary: SummaryMetrics = {"valid": 0, "at_risk": 0, "safe": 0, "invalid": 0}
+    for result in results:
+        risk_status = result["status"]
+        if risk_status == STATUS_INVALID:
+            summary["invalid"] += 1
+            continue
+        summary["valid"] += 1
+        if risk_status == STATUS_AT_RISK:
+            summary["at_risk"] += 1
+        elif risk_status == STATUS_SAFE:
+            summary["safe"] += 1
+    return summary
+
+
+def print_report(results: list[ResultRecord], summary: SummaryMetrics) -> None:
+    """Print the full detection report using formatted lines and summary."""
+    print(REPORT_TITLE)
     for result in results:
         print(format_result_line(result))
 
-    summary = summarize_results(results)
-    print("-" * 84)
+    print("-" * REPORT_DIVIDER_WIDTH)
     print(f"Valid students : {summary['valid']}")
     print(f"At-risk count  : {summary['at_risk']}")
     print(f"Safe count     : {summary['safe']}")
     print(f"Invalid rows   : {summary['invalid']}")
 
-    print("\nDeveloper Note:")
-    print("- Functions now return values, so logic is reusable and testable.")
-    print("- Main loop composes outputs into a clear project data pipeline.")
+
+# ---------------------------------------------------------------------------
+# Section 7: Main Execution
+# ---------------------------------------------------------------------------
+def main() -> None:
+    student_records = load_student_records()
+    results = evaluate_all_students(student_records)
+    summary = summarize_results(results)
+    print_report(results, summary)
 
 
 if __name__ == "__main__":
