@@ -4367,3 +4367,157 @@ You implemented:
 You confirmed:
 - The dataset now uses a single canonical schema.
 - Risk classification produces consistent results across messy inputs.
+
+
+Milestone 4.37: Computing Basic Summary Statistics for Individual Columns
+
+Project Upgrade Target:
+- New script: `src/at_risk_summary_statistics.py`
+- Input:      `data/processed/students_standardized.csv` (clean, schema-aligned)
+
+Step 1: Understand Purpose
+
+What was confirmed:
+- Statistics describe the class as a whole, not just one student.
+- They guide where intervention is most needed.
+
+Why it matters in this project:
+- Risk decisions improve when we know the central tendency, spread, and extremes.
+
+Step 2: Select Numeric Column
+
+What was implemented:
+- The `marks` column is loaded as a `pd.Series` for analysis.
+
+Why it matters in this project:
+- One column at a time forces precise reasoning before combining views.
+
+Step 3: Compute Basic Statistics
+
+What was implemented:
+- `compute_column_statistics(series)` returns:
+  - count, mean, median, min, max, range, std, q25, q75
+
+Findings on `marks`:
+- count: 12, mean: 67.92, median: 68.50, min: 38, max: 95
+- range: 57, std: 19.30, q25: 53.50, q75: 84.25
+
+Step 4: Interpret Results
+
+Reading on `marks`:
+- Average performance is mid-range (around 68/100).
+- A wide range (57) indicates significant variation in learning outcomes.
+
+Step 5: Compare Mean vs Median
+
+What was implemented:
+- `mean_vs_median_signal(stats, label)` reports balance or skew.
+
+Findings:
+- `marks` -> balanced (mean ~ median).
+- `attendance` -> left-skewed (mean < median), suggests low attendance outliers.
+
+Why it matters in this project:
+- Skew warns us that the simple average can hide a tail of struggling students.
+
+Step 6: Analyze Spread
+
+Findings on `marks`:
+- range: 57, std: 19.30 -> high variability across students.
+
+Findings on `attendance`:
+- range: 31, std: 10.59 -> tighter distribution but with low-end outliers.
+
+Step 7: Repeat for Attendance
+
+Findings on `attendance`:
+- count: 12, mean: 81.67, median: 83.00, min: 67, max: 98
+- range: 31, std: 10.59, q25: 71.50, q75: 88.75
+
+Reading:
+- Attendance is generally high but with a few worrying lows.
+
+Step 8: Compare Columns
+
+Side-by-side:
+
+| metric  | marks | attendance |
+|---------|------:|-----------:|
+| mean    |  67.92 |       81.67 |
+| median  |  68.50 |       83.00 |
+| min     |  38.00 |       67.00 |
+| max     |  95.00 |       98.00 |
+| range   |  57.00 |       31.00 |
+| std     |  19.30 |       10.59 |
+
+Reading:
+- Marks vary more widely than attendance.
+- Attendance has lower spread but a longer left tail.
+
+Step 9: Identify Risk Patterns
+
+What was implemented:
+- `report_risk_patterns(df)` reports:
+  - students with marks below 50
+  - students with attendance below 75%
+  - students failing on BOTH conditions
+  - bottom-3 lists by marks and by attendance
+
+Findings:
+- 3 students with `marks < 50`: `Vikram (38)`, `Sara (42)`, `Rohit (49)`.
+- 4 students with `attendance < 75%`: `Arjun, Priya, Neha, Meera`.
+- 0 students currently failing on BOTH conditions simultaneously.
+
+Why it matters in this project:
+- Statistics convert into a precise list of students for intervention.
+
+Step 10: Avoid Misinterpretation
+
+Pitfalls flagged:
+- Relying on the mean alone hides skew.
+- Outliers can drag the mean and mask serious low performers.
+- Always inspect spread (range / std) alongside central tendency.
+
+Step 11: Real-World Thinking
+
+Practical answer:
+- A high mean does not imply a healthy class.
+- The bottom quartile and individual lows must always be reviewed.
+
+Step 12: 2-Minute Video Preparation
+
+Explain:
+1. What summary statistics are and why they matter.
+2. How `mean`, `median`, `min`, `max`, `range`, and `std` describe a column.
+3. What the mean-vs-median check reveals about skew.
+4. How the bottom-3 lists turn statistics into action.
+5. How these insights connect to the project's risk classification.
+
+Implemented Script
+
+- `src/at_risk_summary_statistics.py`
+
+Functions created:
+- `compute_column_statistics(series)` -> per-column stats dict
+- `print_column_statistics(label, stats)` -> formatted printout
+- `mean_vs_median_signal(stats, label)` -> skew interpretation
+- `compare_columns(stats_a, label_a, stats_b, label_b)` -> side-by-side comparison
+- `report_risk_patterns(df)` -> threshold counts + bottom-N lists
+- `add_risk_status(df)` -> project risk rule
+- `print_clean_report(df)` -> final readable report
+
+Key insights produced:
+- `marks` distribution is balanced but high-variance (range = 57).
+- `attendance` distribution is left-skewed with a tighter spread.
+- 7 students are flagged at-risk by the project rule.
+
+Milestone 4.37 Outcome
+
+You computed:
+- Column-level statistics for both `marks` and `attendance`.
+
+You confirmed:
+- The class has wide marks variability and a left-skewed attendance distribution.
+- The statistics directly explain why specific students were flagged at-risk.
+
+You are ready for deeper analysis milestones (group-by, distributions, etc.).
