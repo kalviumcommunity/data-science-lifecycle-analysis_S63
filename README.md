@@ -5596,3 +5596,45 @@ Talking points for the closing video:
 - Insights, assumptions, and limitations are written separately.
 - Outputs (plots and CSVs) are reproducible from the scripts in `src/`.
 - A non-technical reviewer can read this section without seeing any code.
+
+
+## ▶️ Run on Google Colab
+
+The full project can be reproduced on Google Colab with one click. No
+local Python or installation is required.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/kalviumcommunity/data-science-lifecycle-analysis_S63/blob/Final/notebooks/run_in_colab.ipynb)
+
+Direct URL:
+
+```
+https://colab.research.google.com/github/kalviumcommunity/data-science-lifecycle-analysis_S63/blob/Final/notebooks/run_in_colab.ipynb
+```
+
+What the Colab notebook does:
+
+1. Clones this repository (branch `Final`) into the Colab session.
+2. Installs `requirements.txt` (`numpy`, `pandas`, `matplotlib`).
+3. Runs `run_project.py` (all 14 scripts across 6 phases).
+4. Displays every generated chart inline.
+5. Displays every processed CSV as a table.
+
+Manual fallback (if the badge link is blocked):
+
+1. Open https://colab.research.google.com/.
+2. `File → Open notebook → GitHub` tab.
+3. Paste: `kalviumcommunity/data-science-lifecycle-analysis_S63`.
+4. Pick branch `Final`, then open `notebooks/run_in_colab.ipynb`.
+5. `Runtime → Run all`.
+
+
+## 🖥️ Run Locally
+
+```bash
+git clone --branch Final https://github.com/kalviumcommunity/data-science-lifecycle-analysis_S63.git
+cd data-science-lifecycle-analysis_S63
+pip install -r requirements.txt
+python run_project.py
+```
+
+Artifacts are written to `data/processed/` and `outputs/`.
